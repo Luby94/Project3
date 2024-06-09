@@ -151,6 +151,37 @@ label, input[type="checkbox"], input[type="radio"], button, select {
     border: none; /* 테두리 제거 */
     background: none; /* 배경색 제거 */
 }
+/* ------------------------------------------------------------------------------ */
+#modalBackground1 {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        #depCityModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 40px;
+        }
+
 
 </style>
 </head>
@@ -184,192 +215,34 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						<!-- 출발지/도착지 검색 -->
 						<div class="section_2_1">
 							<!-- 출발지 검색 -->
+							<!-- <input id="depCtyCodeSearch" onclick="clickDepCity();" placeholder="출발지가 어디인가요?" class="section_2_1_1" type="text" readonly="readonly" value="서울 SEL"> -->
 							<input id="depCtyCodeSearch" onclick="clickDepCity();" placeholder="출발지가 어디인가요?" class="section_2_1_1" type="text" readonly="readonly" value="서울 SEL">
-							<div id="modalBackground1" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
-							<div id="depCityModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; z-index: 1000;">
+														
+							<!-- <div id="modalBackground1" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+							<div id="depCityModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; z-index: 1000;"> -->
+							<div id="modalBackground1"></div>
+							<div id="depCityModal">
+							
 							    <h2>출발지 선택</h2>
-								<p class="">
+								<!-- <p class="">
 									<input type="text" id="" class="" onkeydown="javascript:if (event.keyCode == 13){ airfn_citySearch_0100010070(event); } " onkeyup="gfn_onlyformat(this, 'notspec'); airfn_citySearch_0100010070(event);" placeholder="도시명을 입력하세요">
 									<button class="btn btn-info" type="button" id="btn_search">검색</button>
-								</p>							    
-							    <p class="">주요도시 바로 선택</p>
-							    <table class="" id="maincitylist">
-									<caption style="display: none;">주요도시 바로 선택</caption>
-							    	<tbody>
-							    		<tr>
-							    			<th scope="row" rowspan="3">국내</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('서울', 'SEL', 'KR');">서울</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('김포', 'GMP', 'KR');">김포</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('제주', 'CJU', 'KR');">제주</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('부산', 'PUS', 'KR');">부산</a></td>
-							    		</tr>
-							    		<tr>
-											<th scope="row" style="display: none;">국내</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('광주', 'KWJ', 'KR');">광주</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('대구', 'TAE', 'KR');">대구</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('청주', 'CJJ', 'KR');">청주</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('여수', 'RSU', 'KR');">여수</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">국내</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('무안', 'MWX', 'KR');">무안</a></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr>
-											<th scope="row" rowspan="3">일본</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('도쿄', 'TYO', 'JP');">도쿄</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('오사카', 'OSA', 'JP');">오사카</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('후쿠오카', 'FUK', 'JP');">후쿠오카</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('삿포로', 'SPK', 'JP');">삿포로</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">일본</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('오키나와', 'OKA', 'JP');">오키나와</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('나고야', 'NGO', 'JP');">나고야</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('구마모토', 'KMJ', 'JP');">구마모토</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('키타큐슈', 'KKJ', 'JP');">키타큐슈</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">일본</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('마쓰야마', 'MYJ', 'JP');">마쓰야마</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('요나고', 'YGJ', 'JP');">요나고</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('히로시마', 'HIJ', 'JP');">히로시마</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('오이타', 'OIT', 'JP');">오이타</a></td>
-										</tr>
-										<tr>
-											<th scope="row" rowspan="5">아시아</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('다낭', 'DAD', 'VN');">다낭</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('방콕/수완나품', 'BKK', 'TH');">방콕/수완나품</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('세부', 'CEB', 'PH');">세부</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('싱가포르', 'SIN', 'SG');">싱가포르</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">아시아</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('코타키나발루', 'BKI', 'MY');">코타키나발루</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('나트랑/캄란', 'CXR', 'VN');">나트랑/캄란</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('호치민', 'SGN', 'VN');">호치민</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('대만/타오위안', 'TPE', 'TW');">대만/타오위안</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">아시아</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('치앙마이', 'CNX', 'TH');">치앙마이</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('울란바토르', 'UBN', 'MN');">울란바토르</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('하노이', 'HAN', 'VN');">하노이</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('푸켓', 'HKT', 'TH');">푸켓</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">아시아</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('마닐라', 'MNL', 'PH');">마닐라</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('프놈펜', 'PNH', 'KH');">프놈펜</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('알마티', 'ALA', 'KZ');">알마티</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('대만/송산', 'TSA', 'TW');">대만/송산</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">아시아</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('자카르타/수카르노하타', 'CGK', 'ID');">자카르타/수카르노하타</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('마카오', 'MFM', 'MO');">마카오</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('쿠알라룸푸르', 'KUL', 'MY');">쿠알라룸푸르</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('몰디브/말레', 'MLE', 'MV');">몰디브/말레</a></td>
-										</tr>
-										<tr>
-											<th scope="row" rowspan="3">미주</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('하와이/호놀룰루', 'HNL', 'US');">하와이/호놀룰루</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('로스앤젤레스', 'LAX', 'US');">로스앤젤레스</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('뉴욕', 'NYC', 'US');">뉴욕</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('샌프란시스코', 'SFO', 'US');">샌프란시스코</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">미주</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('라스베이거스', 'LAS', 'US');">라스베이거스</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('댈러스', 'DFW', 'US');">댈러스</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('밴쿠버', 'YVR', 'CA');">밴쿠버</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('토론토', 'YTO', 'CA');">토론토</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">미주</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('워싱턴/덜레스', 'IAD', 'US');">워싱턴/덜레스</a></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr>
-											<th scope="row" rowspan="5">유럽</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('파리', 'PAR', 'FR');">파리</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('런던', 'LON', 'GB');">런던</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('로마', 'ROM', 'IT');">로마</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('바르셀로나', 'BCN', 'ES');">바르셀로나</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">유럽</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('프랑크푸르트', 'FRA', 'DE');">프랑크푸르트</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('프라하', 'PRG', 'CZ');">프라하</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('암스테르담', 'AMS', 'NL');">암스테르담</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('이스탄불', 'IST', 'TR');">이스탄불</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">유럽</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('헬싱키', 'HEL', 'FI');">헬싱키</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('취리히', 'ZRH', 'CH');">취리히</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('리스본', 'LIS', 'PT');">리스본</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('밀라노/말펜사', 'MXP', 'IT');">밀라노/말펜사</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">유럽</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('부다페스트', 'BUD', 'HU');">부다페스트</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('자그레브', 'ZAG', 'HR');">자그레브</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('두브로브니크', 'DBV', 'HR');">두브로브니크</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('베니스', 'VCE', 'IT');">베니스</a></td>
-										</tr>
-										<tr>
-											<th scope="row" style="display: none;">유럽</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('비엔나', 'VIE', 'AT');">비엔나</a></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-										<tr>
-											<th scope="row">대양주</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('괌', 'GUM', 'GU');">괌</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('사이판', 'SPN', 'MP');">사이판</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('시드니', 'SYD', 'AU');">시드니</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('멜버른', 'MEL', 'AU');">멜버른</a></td>
-										</tr>
-										<tr>
-											<th scope="row">중동</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('아부다비', 'AUH', 'AE');">아부다비</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('텔아비브', 'TLV', 'IL');">텔아비브</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('도하', 'DOH', 'QA');">도하</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('두바이', 'DXB', 'AE');">두바이</a></td>
-										</tr>
-										<tr>
-											<th scope="row">중남미</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('상파울로', 'SAO', 'BR');">상파울로</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('칸쿤', 'CUN', 'MX');">칸쿤</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('산티아고', 'SCL', 'CL');">산티아고</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('하바나', 'HAV', 'CU');">하바나</a></td>
-										</tr>
-										<tr>
-											<th scope="row">아프리카</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('나이로비', 'NBO', 'KE');">나이로비</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('케이프타운', 'CPT', 'ZA');">케이프타운</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('카이로', 'CAI', 'EG');">카이로</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('모리셔스', 'MRU', 'MU');">모리셔스</a></td>
-										</tr>
-										<tr>
-											<th scope="row">중국</th>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('북경', 'BJS', 'CN');">북경</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('상해/푸동', 'PVG', 'CN');">상해/푸동</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('청도', 'TAO', 'CN');">청도</a></td>
-											<td><a class="deploc" href="#_modal" onclick="setDepCity('성도(솽류)', 'CTU', 'CN');">성도(솽류)</a></td>
-										</tr>
-							    	</tbody>
-								</table>
-							    <!-- <button onclick="closeModal()">닫기</button> -->
-							    <!-- <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background: none; border: none; font-size: 40px;">&times;</button> -->
-							    <!-- 출발지 모달 닫기 버튼 -->
-								<button onclick="closeModal('depCityModal', 'modalBackground1')" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background: none; border: none; font-size: 40px;">&times;</button>
+								</p> -->
+								<p>
+							        <input type="text" id="citySearchInput" placeholder="도시명을 입력하세요">
+							        <button class="btn btn-info" type="button" onclick="searchCity();">검색</button>
+							    </p>
+							    
+							    <p>주요도시 바로 선택</p>
+							    
+							    <table id="maincitylist">
+							        <caption style="display: none;">주요도시 바로 선택</caption>
+							        <tbody id="cityTableBody">
+							            <!-- 데이터가 여기에 추가됩니다 -->
+							        </tbody>
+							    </table>
+							    <button class="close-button" onclick="closeModal();">&times;</button>
+							    <!-- <button onclick="closeModal('depCityModal', 'modalBackground1')" style="position: absolute; top: 10px; right: 10px; cursor: pointer; background: none; border: none; font-size: 40px;">&times;</button> -->
 							</div>
 							
 							<!-- 출발/도착지 교체 -->
@@ -666,6 +539,7 @@ function clickDepCity() {
 	const modalBackground1El = document.querySelector('#modalBackground1');
 	depCityModalEl.style.display = 'block';
 	modalBackground1El.style.display = 'block';
+	loadCities(); // 모달 열 때 도시 데이터 로드
 }
 
 // 모달-도착지
@@ -677,12 +551,12 @@ function clickAriCity() {
 }
 
 // 출발지 선택
-function setDepCity(cityName, cityCode, cityCountry) {
+/* function setDepCity(cityName, cityCode, cityCountry) {
 	const setDepCityEl = document.getElementById('depCtyCodeSearch');
 	console.dir(setDepCityEl);
 	setDepCityEl.value = cityName + ' ' + cityCode;
 	console.dir(setDepCityEl.value);
-}
+} */
 
 // 도착지 선택
 function setDepCity2(cityName, cityCode, cityCountry) {
@@ -713,10 +587,92 @@ modalItems2.forEach(function(item) {
 });
 
 // 모달 닫기
-function closeModal(modalId, backgroundId) {
+/* function closeModal(modalId, backgroundId) {
 	event.preventDefault(); // 모달 닫을때 항공권 검색 이동 막음
     document.getElementById(modalId).style.display = 'none';
     document.getElementById(backgroundId).style.display = 'none';
+} */
+
+//---------------------------------------------------------------------------------------------------
+
+function loadCities() {
+        // AJAX 요청으로 도시 데이터를 가져옵니다.
+        fetch('/Airplane/Main')
+            .then(response => response.text())
+		    .then(text => {
+		        console.log(text); // 응답 내용을 콘솔에 출력
+		        return JSON.parse(text); // JSON 파싱 시도
+		    })
+            .then(data => {
+                
+            	const cityTableBody = document.getElementById('cityTableBody');
+                console.dir(cityTableBody);
+            	
+                cityTableBody.innerHTML = ''; // 기존 내용을 초기화
+                let currentRegion = '';
+                data.forEach(city => {
+                    if (city.region !== currentRegion) {
+                        if (currentRegion !== '') {
+                            cityTableBody.appendChild(document.createElement('tr')); // 빈 행 추가
+                        }
+                        currentRegion = city.region;
+                        const regionRow = document.createElement('tr');
+                        const regionCell = document.createElement('th');
+                        regionCell.scope = 'row';
+                        regionCell.rowSpan = 1; // 기본값
+                        regionCell.textContent = currentRegion;
+                        regionRow.appendChild(regionCell);
+                        cityTableBody.appendChild(regionRow);
+                    }
+                    const cityRow = document.createElement('tr');
+                    const cityCell = document.createElement('td');
+                    cityCell.colSpan = 4; // 기본값
+                    const cityLink = document.createElement('a');
+                    cityLink.className = 'deploc';
+                    cityLink.href = '#_modal';
+                    cityLink.textContent = `\${city.name} (\${city.code})`;
+                    cityLink.onclick = () => setDepCity(city.name, city.code, city.country);
+                    cityCell.appendChild(cityLink);
+                    cityRow.appendChild(cityCell);
+                    cityTableBody.appendChild(cityRow);
+                });
+            })
+            .catch(error => console.error('Error loading cities:', error));
+    }
+    
+function setDepCity(name, code, country) {
+    document.getElementById('depCtyCodeSearch').value = `\${name} \${code}`;
+    closeModal();
+}
+
+function searchCity() {
+    const query = document.getElementById('citySearchInput').value.trim().toLowerCase();
+    // AJAX 요청으로 도시 검색
+    fetch(`/api/searchCities?query=\${query}`)
+        .then(response => response.json())
+        .then(data => {
+            const cityTableBody = document.getElementById('cityTableBody');
+            cityTableBody.innerHTML = ''; // 기존 내용을 초기화
+            data.forEach(city => {
+                const cityRow = document.createElement('tr');
+                const cityCell = document.createElement('td');
+                const cityLink = document.createElement('a');
+                cityLink.className = 'deploc';
+                cityLink.href = '#_modal';
+                cityLink.textContent = `\${city.name} (\${city.code})`;
+                cityLink.onclick = () => setDepCity(city.name, city.code, city.country);
+                cityCell.appendChild(cityLink);
+                cityRow.appendChild(cityCell);
+                cityTableBody.appendChild(cityRow);
+            });
+        })
+        .catch(error => console.error('Error searching cities:', error));
+}
+
+// 모달닫기2
+function closeModal() {
+    document.getElementById('modalBackground1').style.display = 'none';
+    document.getElementById('depCityModal').style.display = 'none';
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -841,14 +797,9 @@ function showPassengerOptions() {
 
 // 선택값 컨트롤러 전송
 function sendSelectionToController() {
-	
-	// 출발지 값
     let depCity = document.getElementById('depCtyCodeSearch').value;
-	
-	// 도착지 값
     let ariCity = document.getElementById('ariCtyCodeSearch').value;
 
-	// 출발 날짜, 도착날짜 값
     let depDatePicker = $("#txt_depDt_view");
     let arrDatePicker = $("#txt_arrDt_view");
     let selectedDate = depDatePicker.datepicker( "getDate" );
@@ -856,7 +807,6 @@ function sendSelectionToController() {
     let selectedDate2 = arrDatePicker.datepicker( "getDate" );
     let arrdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate2 );
     
-    // initform, 왕복 편도 다구간 값
     let radioGroup = document.getElementsByName('initform');
     let selectedValue;
     for (let i = 0; i < radioGroup.length; i++) {
@@ -866,17 +816,12 @@ function sendSelectionToController() {
         }
     }
     
-    // 승객 명수 값
-    let adultCount = parseInt(document.getElementById('adultCount').innerText);
-    let childCount = parseInt(document.getElementById('childCount').innerText);
-    let infantCount = parseInt(document.getElementById('infantCount').innerText);
-    let totalPassengers = adultCount + childCount + infantCount;
-
-    // 좌석 등급 값
+    //let adultCount = parseInt(document.getElementById('adultCount').innerText);
+    //let childCount = parseInt(document.getElementById('childCount').innerText);
+    //let infantCount = parseInt(document.getElementById('infantCount').innerText);
+    //let totalPassengers = adultCount + childCount + infantCount;
     let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
 
-    //-------------------------------------------------------
-    
     // 폼 생성
     var form = document.createElement('form');
     form.method = 'POST';
@@ -912,24 +857,6 @@ function sendSelectionToController() {
     inputSelectedValue.name = 'initform';
     inputSelectedValue.value = selectedValue;
     form.appendChild(inputSelectedValue);
-
-    var inputAdultCount = document.createElement('input');
-    inputAdultCount.type = 'hidden';
-    inputAdultCount.name = 'adultCount';
-    inputAdultCount.value = adultCount;
-    form.appendChild(inputAdultCount);
-    
-    var inputChildCount = document.createElement('input');
-    inputChildCount.type = 'hidden';
-    inputChildCount.name = 'childCount';
-    inputChildCount.value = childCount;
-    form.appendChild(inputChildCount);
-    
-    var inputInfantCount = document.createElement('input');
-    inputInfantCount.type = 'hidden';
-    inputInfantCount.name = 'infantCount';
-    inputInfantCount.value = infantCount;
-    form.appendChild(inputInfantCount);
 
     var inputSeatClass = document.createElement('input');
     inputSeatClass.type = 'hidden';

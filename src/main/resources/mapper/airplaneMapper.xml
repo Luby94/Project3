@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.escape.airplane.mapper.AirplaneMapper">
+
+
+<select id="getAirplaneInfo">
+	SELECT
+	  CITY_IDX,
+	  COUNTRY_IDX,
+	  NAME,
+	  ENAME
+	FROM
+	  CITY_TB
+</select>
+
+
+</mapper>
