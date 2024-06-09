@@ -184,7 +184,8 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						<!-- 출발지/도착지 검색 -->
 						<div class="section_2_1">
 							<!-- 출발지 검색 -->
-							<input id="depCtyCodeSearch" onclick="clickDepCity();" placeholder="출발지가 어디인가요?" class="section_2_1_1" type="text" readonly="readonly" value="서울 SEL">
+							<!-- <input id="depCtyCodeSearch" onclick="clickDepCity();" placeholder="출발지가 어디인가요?" class="section_2_1_1" type="text" readonly="readonly" value="서울 SEL"> -->
+							<input id="depCtyCodeSearch" onclick="clickDepCity();" placeholder="출발지가 어디인가요?" class="section_2_1_1" type="text" readonly="readonly" value="서울">
 							<div id="modalBackground1" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
 							<div id="depCityModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; z-index: 1000;">
 							    <h2>출발지 선택</h2>
@@ -376,7 +377,7 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 							<button type="button" class="section_2_1_2" id="btn_arrDepChange" onclick="javascript:airfn_arrDepChange_0100100010();">↔</button>
 							
 							<!-- 도착지 검색 -->
-							<input id="ariCtyCodeSearch" onclick="clickAriCity();" placeholder="도착지가 어디인가요?" class="section_2_1_3" type="text" readonly="readonly" value="도쿄 TYO">
+							<input id="ariCtyCodeSearch" onclick="clickAriCity();" placeholder="도착지가 어디인가요?" class="section_2_1_3" type="text" readonly="readonly" value="도쿄">
 							<div id="modalBackground2" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
 							<div id="ariCityModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; z-index: 1000;">
 								<h2>도착지 선택</h2>
@@ -680,7 +681,8 @@ function clickAriCity() {
 function setDepCity(cityName, cityCode, cityCountry) {
 	const setDepCityEl = document.getElementById('depCtyCodeSearch');
 	console.dir(setDepCityEl);
-	setDepCityEl.value = cityName + ' ' + cityCode;
+	//setDepCityEl.value = cityName + ' ' + cityCode;
+	setDepCityEl.value = cityName;
 	console.dir(setDepCityEl.value);
 }
 
@@ -688,7 +690,8 @@ function setDepCity(cityName, cityCode, cityCountry) {
 function setDepCity2(cityName, cityCode, cityCountry) {
 	const setDepCity2El = document.getElementById('ariCtyCodeSearch');
 	console.dir(setDepCity2El);
-	setDepCity2El.value = cityName + ' ' + cityCode;
+	//setDepCity2El.value = cityName + ' ' + cityCode;
+	setDepCity2El.value = cityName;
 	console.dir(setDepCity2El.value);
 }
 

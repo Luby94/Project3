@@ -2,6 +2,7 @@ package com.escape.airplane.domain;
 
 public class AirplaneSearchVo {
 
+	// airplane_time_tb
 	// Field
 	private int airplane_time_idx;
 	private int airplane_idx;

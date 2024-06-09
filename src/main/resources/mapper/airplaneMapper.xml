@@ -3,7 +3,7 @@
 <mapper namespace="com.escape.airplane.mapper.AirplaneMapper">
 
 
-<select id="getAirplaneInfo">
+<!-- <select id="getAirplaneInfo">
 	SELECT
 	  CITY_IDX,
 	  COUNTRY_IDX,
@@ -11,6 +11,67 @@
 	  ENAME
 	FROM
 	  CITY_TB
+</select> -->
+<select id="getDepartureInfo">
+	SELECT
+	  CITY_IDX,
+	  COUNTRY_IDX,
+	  NAME,
+	  ENAME
+	FROM
+	  CITY_TB
+	WHERE
+	  NAME = #{ depCity }
+</select>
+
+<select id="getArrivalInfo">
+	SELECT
+	  CITY_IDX,
+	  COUNTRY_IDX,
+	  NAME,
+	  ENAME
+	FROM
+	  CITY_TB
+	WHERE
+	  NAME = #{ ariCity }
+</select>
+
+
+<!-- <select id="getTimeList">
+	SELECT
+	  AIRPLANE_TIME_IDX,
+	  AIRPLANE_IDX,
+	  START_DATE,
+	  END_DATE,
+	  START_TIME,
+	  END_TIME,
+	  DEPARTURE_LOC,
+	  ARRIVAL_LOC,
+	  KNOWN
+	FROM
+	  AIRPLANE_TIME_TB
+</select> -->
+<select id="getTimeList">
+	SELECT
+	  AIRPLANE_TIME_IDX,
+	  AIRPLANE_IDX,
+	  START_DATE,
+	  END_DATE,
+	  CAST(START_TIME AS DATE) AS START_TIME,
+	  CAST(END_TIME AS DATE) AS END_TIME,
+	  DEPARTURE_LOC,
+	  ARRIVAL_LOC,
+	  KNOWN
+	FROM
+	  AIRPLANE_TIME_TB
+	WHERE
+	  START_DATE = #{ arg0 }
+	AND
+	  END_DATE = #{ arg1 }
+	AND
+	  DEPARTURE_LOC = #{ arg2 }
+	AND
+	  ARRIVAL_LOC = #{ arg3 }
 </select>
 
 
