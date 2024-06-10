@@ -1,38 +1,33 @@
 package com.escape.airplane.domain;
 
 public class AirplaneVo {
-
-	// City
-	private int city_idx;
 	
-	// Country(City 중복)
-	private int country_idx;
+	// airplane_tb
+	private int airplane_idx;
+	private int airline_idx;
 	private String name;
-	private String ename;
 	
-	
-	// 생성자
+	// Constructor
 	public AirplaneVo() {}
-	public AirplaneVo(int city_idx, int country_idx, String name, String ename) {
+	public AirplaneVo(int airplane_idx, int airline_idx, String name) {
 		super();
-		this.city_idx = city_idx;
-		this.country_idx = country_idx;
+		this.airplane_idx = airplane_idx;
+		this.airline_idx = airline_idx;
 		this.name = name;
-		this.ename = ename;
 	}
-	
+
 	// Getter/Setter
-	public int getCity_idx() {
-		return city_idx;
+	public int getAirplane_idx() {
+		return airplane_idx;
 	}
-	public void setCity_idx(int city_idx) {
-		this.city_idx = city_idx;
+	public void setAirplane_idx(int airplane_idx) {
+		this.airplane_idx = airplane_idx;
 	}
-	public int getCountry_idx() {
-		return country_idx;
+	public int getAirline_idx() {
+		return airline_idx;
 	}
-	public void setCountry_idx(int country_idx) {
-		this.country_idx = country_idx;
+	public void setAirline_idx(int airline_idx) {
+		this.airline_idx = airline_idx;
 	}
 	public String getName() {
 		return name;
@@ -40,18 +35,11 @@ public class AirplaneVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEname() {
-		return ename;
-	}
-	public void setEname(String ename) {
-		this.ename = ename;
-	}
 	
 	// toString
 	@Override
 	public String toString() {
-		return "AirplaneVo [city_idx=" + city_idx + ", country_idx=" + country_idx + ", name=" + name + ", ename="
-				+ ename + "]";
+		return "AirplaneVo [airplane_idx=" + airplane_idx + ", airline_idx=" + airline_idx + ", name=" + name + "]";
 	}
 	
 }

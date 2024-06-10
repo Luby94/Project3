@@ -2,8 +2,8 @@ package com.escape.airplane.domain;
 
 public class AirplaneSearchVo {
 
-	// airplane_time_tb
 	// Field
+	// airplane_time_tb
 	private int airplane_time_idx;
 	private int airplane_idx;
 	private String start_date;
@@ -14,10 +14,19 @@ public class AirplaneSearchVo {
 	private int arrival_loc;
 	private int known;
 	
+	// airplane_price_tb
+	private int airplane_price_idx;
+	//private int airplane_time_idx;
+	private int price;
+	private int ptype_idx;
+	private int stype_idx;
+	
 	// Constructor
 	public AirplaneSearchVo() {}
 	public AirplaneSearchVo(int airplane_time_idx, int airplane_idx, String start_date, String end_date,
-			String start_time, String end_time, int departure_loc, int arrival_loc, int known) {
+			String start_time, String end_time, int departure_loc, int arrival_loc, int known, int airplane_price_idx,
+			int price, int ptype_idx, int stype_idx) {
+		super();
 		this.airplane_time_idx = airplane_time_idx;
 		this.airplane_idx = airplane_idx;
 		this.start_date = start_date;
@@ -27,8 +36,12 @@ public class AirplaneSearchVo {
 		this.departure_loc = departure_loc;
 		this.arrival_loc = arrival_loc;
 		this.known = known;
+		this.airplane_price_idx = airplane_price_idx;
+		this.price = price;
+		this.ptype_idx = ptype_idx;
+		this.stype_idx = stype_idx;
 	}
-	
+
 	// Getter/Setter
 	public int getAirplane_time_idx() {
 		return airplane_time_idx;
@@ -84,14 +97,39 @@ public class AirplaneSearchVo {
 	public void setKnown(int known) {
 		this.known = known;
 	}
-	
+	public int getAirplane_price_idx() {
+		return airplane_price_idx;
+	}
+	public void setAirplane_price_idx(int airplane_price_idx) {
+		this.airplane_price_idx = airplane_price_idx;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getPtype_idx() {
+		return ptype_idx;
+	}
+	public void setPtype_idx(int ptype_idx) {
+		this.ptype_idx = ptype_idx;
+	}
+	public int getStype_idx() {
+		return stype_idx;
+	}
+	public void setStype_idx(int stype_idx) {
+		this.stype_idx = stype_idx;
+	}
+
 	// toString
 	@Override
 	public String toString() {
 		return "AirplaneSearchVo [airplane_time_idx=" + airplane_time_idx + ", airplane_idx=" + airplane_idx
 				+ ", start_date=" + start_date + ", end_date=" + end_date + ", start_time=" + start_time + ", end_time="
 				+ end_time + ", departure_loc=" + departure_loc + ", arrival_loc=" + arrival_loc + ", known=" + known
-				+ "]";
+				+ ", airplane_price_idx=" + airplane_price_idx + ", price=" + price + ", ptype_idx=" + ptype_idx
+				+ ", stype_idx=" + stype_idx + "]";
 	}
 	
 }
