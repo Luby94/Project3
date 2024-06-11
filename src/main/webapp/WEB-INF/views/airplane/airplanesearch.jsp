@@ -13,129 +13,123 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" href="/css/common.css" />
 <link rel="stylesheet" href="/css/header.css" />
+
+<style>
+
+.spanImg {
+	border: 1px solid #ccc;
+	width: 90px;
+	height: 70px;
+}
+
+.flight-wrapper {
+    margin-bottom: 20px;
+}
+
+.flight-header {
+    display: flex;
+    align-items: center;
+}
+
+.flight-logo {
+    text-align: center;
+    margin-right: 20px;
+}
+
+.flight-logo img {
+    display: block;
+    margin: 0 auto;
+}
+
+.flight-logo em {
+    display: block;
+    margin-top: 5px;
+}
+
+.flight-details-wrapper {
+    flex-grow: 1;
+}
+
+.flight-details {
+    margin: 10px 0;
+}
+
+.flight-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flight-details li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.flight-details span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.flight-details em {
+    font-style: normal;
+    font-weight: bold;
+}
+
+</style>
+
 </head>
-<body>
 
 <%@include file="/WEB-INF/include/header.jsp"%>
 <%@include file="/WEB-INF/include/nav.jsp"%>
 
+<body>
+    <c:forEach items="${roundTripFlights}" var="roundTrip">
+        <div class="flight-wrapper">
+            <div class="flight-header">
+                <span class="flight-logo">
+                    <img src="${ roundTrip[0].LOGO }" class="spanImg" alt="logo">
+                    <em>${ roundTrip[0].AIRLINE_NAME }</em>
+                </span>
+                <div class="flight-details-wrapper">
+                    <c:forEach items="${roundTrip}" var="flight">
+                        <div class="flight-details">
+                            <ul>
+                                <li>
+                                    <div>
+                                        <span>
+                                            <span>${ flight.START_TIME }
+                                                <em>${ flight.DEPCITY_ENAME }
+                                                    <span>
+                                                        <span>${ flight.DEPCITY_NAME }</span>
+                                                    </span>
+                                                </em>
+                                            </span>
+                                        </span>
+                                        <span>→</span>
+                                        <span>
+                                            <em>${ flight.DURATIONHOUR }시간 ${ flight.DURATIONMINUTE }분</em>
+                                        </span>
+                                        <span>
+                                            <span>${ flight.END_TIME }</span>
+                                            <span>
+                                                <em>${ flight.ARRCITY_ENAME }
+                                                    <span>${ flight.ARRCITY_NAME }</span>
+                                                </em>
+                                            </span>
+                                        </span>
+                                        <span>직항</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
+        <hr/> <!-- 왕복 항공편 구분선 -->
+    </c:forEach>
 
-	<c:choose>
-	    <c:when test="${not empty returnSearchList}">
-	    	<!-- 왕복일 경우 -->
-	        <c:forEach items="${returnSearchList}" var="flight">
-			        <div>
-						<div>
-							<ul>
-								<li>
-									<div>
-										<div>
-											<div>
-												<span>
-													<img src="${ flight.LOGO }" style="width: 150px; height: 150px;" alt="logo">
-												</span>
-												<span>
-													<em>${ flight.AIRLINE_NAME }</em>
-												</span>
-												<span>
-													<span>
-														<span>${ flight.START_TIME }
-															<em>${ flight.DEPCITY_ENAME }
-																<span>
-																	<span>
-																		<span>${ flight.DEPCITY_NAME }</span>
-																	</span>
-																</span>
-															</em>
-														</span>
-													</span>
-												</span>
-												<span>
-													<span>→</span>
-													<em>${ flight.DURATIONHOUR }시간 ${ flight.DURATIONMINUTE }분</em>
-												</span>
-												<span>
-													<span>
-														<span>${ flight.END_TIME }</span>
-													</span>
-													<span>
-														<em>${ flight.ARRCITY_ENAME }
-															<span>
-																<span>
-																	<span>${ flight.ARRCITY_NAME }</span>
-																</span>
-															</span>
-														</em>
-													</span>
-												</span>
-												<span>직항</span>
-											</div>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-	        </c:forEach>
-	    </c:when>
-	    <c:otherwise>
-	        <!-- 편도일 경우 -->
-	        <c:forEach items="${airSearchList}" var="flight">
-			        <div>
-						<div>
-							<ul>
-								<li>
-									<div>
-										<div>
-											<div>
-												<span>
-													<img src="${ flight.LOGO }" style="width: 150px; height: 150px;" alt="logo">
-												</span>
-												<span>
-													<em>${ flight.AIRLINE_NAME }</em>
-												</span>
-												<span>
-													<span>
-														<span>${ flight.START_TIME }
-															<em>${ flight.DEPCITY_ENAME }
-																<span>
-																	<span>
-																		<span>${ flight.DEPCITY_NAME }</span>
-																	</span>
-																</span>
-															</em>
-														</span>
-													</span>
-												</span>
-												<span>
-													<span>→</span>
-													<em>${ flight.DURATIONHOUR }시간 ${ flight.DURATIONMINUTE }분</em>
-												</span>
-												<span>
-													<span>
-														<span>${ flight.END_TIME }</span>
-													</span>
-													<span>
-														<em>${ flight.ARRCITY_ENAME }
-															<span>
-																<span>
-																	<span>${ flight.ARRCITY_NAME }</span>
-																</span>
-															</span>
-														</em>
-													</span>
-												</span>
-												<span>직항</span>
-											</div>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-	        </c:forEach>
-	    </c:otherwise>
-	</c:choose>
+	
 <%@include file="/WEB-INF/include/footer.jsp"%>
 
 </body>

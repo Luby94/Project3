@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,10 @@ import com.escape.airplane.domain.AirplaneVo;
 import com.escape.airplane.domain.AirportVo;
 import com.escape.airplane.domain.CityVo;
 import com.escape.airplane.mapper.AirplaneMapper;
+
+import static java.util.stream.Collectors.*;
+
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/Airplane")
@@ -92,19 +97,27 @@ public class AirplaneController {
 	        List<CityVo> departureLoc1 = airplaneMapper.getDepartureInfo(depCity1);
 	        CityVo dfirstAirplane1 = departureLoc1.get(0);
 	        int departure_loc1 = dfirstAirplane1.getCity_idx();
+	        System.out.println("===== departureLoc1 =====: " + departureLoc1);
+	        System.out.println("===== departure_loc1 =====: " + departure_loc1);
 
 	        List<CityVo> arrivalLoc1 = airplaneMapper.getArrivalInfo(ariCity1);
 	        CityVo afirstAirplane1 = arrivalLoc1.get(0);
 	        int arrival_loc1 = afirstAirplane1.getCity_idx();
+	        System.out.println("===== arrivalLoc1 =====: " + arrivalLoc1);
+	        System.out.println("===== arrival_loc1 =====: " + arrival_loc1);
 
 	        List<CityVo> departureLoc2 = airplaneMapper.getDepartureInfo(depCity2);
 	        CityVo dfirstAirplane2 = departureLoc2.get(0);
 	        int departure_loc2 = dfirstAirplane2.getCity_idx();
-
+	        System.out.println("===== departureLoc2 =====: " + departureLoc2);
+	        System.out.println("===== departure_loc2 =====: " + departure_loc2);
+	        
 	        List<CityVo> arrivalLoc2 = airplaneMapper.getArrivalInfo(ariCity2);
 	        CityVo afirstAirplane2 = arrivalLoc2.get(0);
 	        int arrival_loc2 = afirstAirplane2.getCity_idx();
-
+	        System.out.println("===== arrivalLoc2 =====: " + arrivalLoc2);
+	        System.out.println("===== arrival_loc2 =====: " + arrival_loc2);
+	        
 	        // depDates2 배열의 각 날짜 처리
 	        for (String depDate2 : depDates2) {
 	            List<Map<String, Object>> tempList;
@@ -143,8 +156,59 @@ public class AirplaneController {
 		
 	    System.out.println("===== airSearchList =====: " + airSearchList);
 	    
-		ModelAndView mv = new ModelAndView();
+	    //-------------------------------------------------------------------------------
+	    
+	    // 왕복 항공편 연결
+	    
+	    /*
+	    Map<Integer, List<Map<String, Object>>> groupedFlights = airSearchList.stream()
+	        .collect(Collectors.groupingBy(flight -> (int) flight.get("AIRPLANE_IDX")));
+	    */
+	    Map<Integer, List<Map<String, Object>>> groupedFlights = airSearchList.stream()
+	    	    .collect(Collectors.groupingBy(flight -> ((BigDecimal) flight.get("AIRPLANE_IDX")).intValue()));
+	    System.out.println("===== groupedFlights =====: " + groupedFlights);
+
+	    List<List<Map<String, Object>>> roundTripFlights = new ArrayList<>();
+	    
+	    for (List<Map<String, Object>> flights : groupedFlights.values()) {
+	    	
+	        List<Map<String, Object>> roundTrip = new ArrayList<>();
+	        
+	        for (Map<String, Object> flight : flights) {
+	        	
+	            if (roundTrip.size() == 2) break;
+	            if (roundTrip.isEmpty()) {
+	            	
+	                roundTrip.add(flight);
+	                
+	            } else {
+	            	
+	                Map<String, Object> firstFlight = roundTrip.get(0);
+	                
+	                if (firstFlight.get("DEPARTURE_LOC").equals(flight.get("ARRIVAL_LOC")) &&
+	                    firstFlight.get("ARRIVAL_LOC").equals(flight.get("DEPARTURE_LOC"))) {
+	                	
+	                    roundTrip.add(flight);
+	                    
+	                }
+	            }
+	        }
+	        
+	        if (roundTrip.size() == 2) {
+	        	
+	            roundTripFlights.add(roundTrip);
+	            
+	        }
+	        
+	        System.out.println("===== roundTripFlights =====: " + roundTripFlights);
+	        
+	    }
+	    
+	    //-------------------------------------------------------------------------------
+
+	    ModelAndView mv = new ModelAndView();
 		mv.addObject("airSearchList", airSearchList);
+		mv.addObject("roundTripFlights", roundTripFlights);
 		mv.setViewName("airplane/airplanesearch");
 		return mv;
 		
