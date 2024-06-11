@@ -108,7 +108,10 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 .section_2_1_2,
 .section_2_1_3,
 .section_2_2_1,
-.section_2_2_2 {
+.section_2_2_2,
+.section_2_2_3,
+.section_2_2_4,
+.section_2_2_5 {
 	cursor: pointer;
 	border: 0px;
 	background-color: #f0f0f0;
@@ -575,44 +578,44 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						</div>
 						
 						<!-- 출국일자 / 입국일자 -->
-						<div class="section_2_2" id="div_day_selector" role="calendarPopTxt" style="cursor: pointer;">
-							<input id="txt_depDt" class="section_2_2_1" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
-							<input id="txt_depDt_view" class="section_2_2_1" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
+						<div class="section_2_2" id="div_day_selector1" role="calendarPopTxt" style="cursor: pointer;">
+							<input id="txt_depDt" class="section_2_2_1 depDatePicker" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
+							<input id="txt_depDt_view" class="section_2_2_1 depDatePickerView" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
 							<span class="hyphen" id="hyphen">-</span> <!-- 편도검색할 경우 hide 추가 -->
-							<input id="txt_arrDt" class="section_2_2_2" type="hidden" title="오는날 선택" placeholder="오는날 선택" readonly="readonly">
-							<input id="txt_arrDt_view" class="section_2_2_2" type="text" title="오는날 선택" placeholder="오는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
+							<input id="txt_arrDt" class="section_2_2_2 arrDatePicker" type="hidden" title="오는날 선택" placeholder="오는날 선택" readonly="readonly">
+							<input id="txt_arrDt_view" class="section_2_2_2 arrDatePickerView" type="text" title="오는날 선택" placeholder="오는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
 						</div>
 						
 						<!-- 승객수, 좌석등급 -->
-						<div class="section_2_3">
-					        <a href="javascript:void(0);" onclick="showPassengerOptions()" class="">
-					            <span class="txt" id="bin_people">승객 1명, 일반석</span>
+						<div id="section_2_3_RT" class="section_2_3">
+					        <a href="javascript:void(0);" onclick="showPassengerOptions('RT')" class="">
+					            <span class="txt bin_people">승객 1명, 일반석</span>
 					        </a>
 					    </div>
 						
-						<div id="passengerOptions" class="passenger-selector" style="display:none;">
+						<div id="passengerOptionsRT" class="passenger-selector" style="display:none;">
 					        <!-- 성인 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="adultCount">성인:</label>
-					            <button onclick="adjustCount('adultCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="adultCount">1</span>
-					            <button onclick="adjustCount('adultCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('adultCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="adultCount">1</span>
+					            <button onclick="adjustCount('adultCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <!-- 소아 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="childCount">소아:</label>
-					            <button onclick="adjustCount('childCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="childCount">0</span>
-					            <button onclick="adjustCount('childCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('childCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="childCount">0</span>
+					            <button onclick="adjustCount('childCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <!-- 유아 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="infantCount">유아:</label>
-					            <button onclick="adjustCount('infantCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="infantCount">0</span>
-					            <button onclick="adjustCount('infantCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('infantCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="infantCount">0</span>
+					            <button onclick="adjustCount('infantCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <hr>
@@ -626,7 +629,7 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 					        </div>
 					
 					        <!-- 선택 완료 버튼 -->
-					        <button type="button" onclick="completeSelection(event)" class="btn btn-primary btn-complete">선택 완료</button>
+					        <button type="button" onclick="completeSelection(event, 'RT')" class="btn btn-primary btn-complete">선택 완료</button>
 					    </div>
 					    
 					    <!-- 항공권 검색 -->
@@ -1031,41 +1034,41 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						</div>
 						
 						<!-- 출국일자 -->
-						<div class="section_2_2" id="div_day_selector" role="calendarPopTxt" style="cursor: pointer;">
-							<input id="txt_depDt" class="section_2_2_1" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
-							<input id="txt_depDt_view" class="section_2_2_1" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
+						<div class="section_2_2" id="div_day_selector2" role="calendarPopTxt" style="cursor: pointer;">
+							<input id="txt_depDt" class="section_2_2_1 depDatePicker" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
+							<input id="txt_depDt_view" class="section_2_2_1 depDatePickerView" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
 						</div>
 						
 						<!-- 승객수, 좌석등급 -->
-						<div class="section_2_3">
-					        <a href="javascript:void(0);" onclick="showPassengerOptions()" class="">
-					            <span class="txt" id="bin_people">승객 1명, 일반석</span>
+						<div id="section_2_3_OW" class="section_2_3">
+					        <a href="javascript:void(0);" onclick="showPassengerOptions('OW')" class="">
+					            <span class="txt bin_people">승객 1명, 일반석</span>
 					        </a>
 					    </div>
 						
-						<div id="passengerOptions" class="passenger-selector" style="display:none;">
+						<div id="passengerOptionsOW" class="passenger-selector" style="display:none;">
 					        <!-- 성인 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="adultCount">성인:</label>
-					            <button onclick="adjustCount('adultCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="adultCount">1</span>
-					            <button onclick="adjustCount('adultCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('adultCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="adultCount">1</span>
+					            <button onclick="adjustCount('adultCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <!-- 소아 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="childCount">소아:</label>
-					            <button onclick="adjustCount('childCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="childCount">0</span>
-					            <button onclick="adjustCount('childCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('childCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="childCount">0</span>
+					            <button onclick="adjustCount('childCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <!-- 유아 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="infantCount">유아:</label>
-					            <button onclick="adjustCount('infantCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="infantCount">0</span>
-					            <button onclick="adjustCount('infantCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('infantCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="infantCount">0</span>
+					            <button onclick="adjustCount('infantCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <hr>
@@ -1079,7 +1082,7 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 					        </div>
 					
 					        <!-- 선택 완료 버튼 -->
-					        <button type="button" onclick="completeSelection(event)" class="btn btn-primary btn-complete">선택 완료</button>
+					        <button type="button" onclick="completeSelection(event, 'OW')" class="btn btn-primary btn-complete">선택 완료</button>
 					    </div>
 					    
 					    <!-- 항공권 검색 -->
@@ -1484,41 +1487,41 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						</div>
 						
 						<!-- 다구간 탑승일 -->
-						<div class="section_2_2" id="div_day_selector" role="calendarPopTxt" style="cursor: pointer;">
-							<input id="txt_depDt" class="section_2_2_1" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
-							<input id="txt_depDt_view" class="section_2_2_1" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
+						<div class="section_2_2" id="div_day_selector3" role="calendarPopTxt" style="cursor: pointer;">
+							<input id="txt_BoardingDt1" class="section_2_2_3 boardingDatePicker" type="hidden" title="탑승일 선택" placeholder="탑승일 선택" readonly="readonly">
+							<input id="txt_BoardingDt_view1" class="section_2_2_3 boardingDatePickerView" role="calendarPopInput" type="text" title="탑승일 선택" placeholder="탑승일 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
 						</div>
 						
 						<!-- 승객수, 좌석등급 -->
-						<div class="section_2_3">
-					        <a href="javascript:void(0);" onclick="showPassengerOptions()" class="">
-					            <span class="txt" id="bin_people">승객 1명, 일반석</span>
+						<div id="section_2_3_MT" class="section_2_3">
+					        <a href="javascript:void(0);" onclick="showPassengerOptions('MT')" class="">
+					            <span class="txt bin_people">승객 1명, 일반석</span>
 					        </a>
 					    </div>
 						
-						<div id="passengerOptions" class="passenger-selector" style="display:none;">
+						<div id="passengerOptionsMT" class="passenger-selector" style="display:none;">
 					        <!-- 성인 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="adultCount">성인:</label>
-					            <button onclick="adjustCount('adultCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="adultCount">1</span>
-					            <button onclick="adjustCount('adultCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('adultCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="adultCount">1</span>
+					            <button onclick="adjustCount('adultCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <!-- 소아 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="childCount">소아:</label>
-					            <button onclick="adjustCount('childCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="childCount">0</span>
-					            <button onclick="adjustCount('childCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('childCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="childCount">0</span>
+					            <button onclick="adjustCount('childCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <!-- 유아 명수 선택 -->
 					        <div class="passenger-count">
 					            <label for="infantCount">유아:</label>
-					            <button onclick="adjustCount('infantCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="infantCount">0</span>
-					            <button onclick="adjustCount('infantCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
+					            <button onclick="adjustCount('infantCount', -1, this)" class="btn btn-outline-secondary btn-sm">-</button>
+					            <span class="infantCount">0</span>
+					            <button onclick="adjustCount('infantCount', 1, this)" class="btn btn-outline-secondary btn-sm">+</button>
 					        </div>
 					
 					        <hr>
@@ -1532,7 +1535,7 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 					        </div>
 					
 					        <!-- 선택 완료 버튼 -->
-					        <button type="button" onclick="completeSelection(event)" class="btn btn-primary btn-complete">선택 완료</button>
+					        <button type="button" onclick="completeSelection(event, 'MT')" class="btn btn-primary btn-complete">선택 완료</button>
 					    </div>
 					    
 					    <!-- 항공권 검색 -->
@@ -1929,56 +1932,10 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						</div>
 						
 						<!-- 다구간 탑승일 -->
-						<div class="section_2_2" id="div_day_selector" role="calendarPopTxt" style="cursor: pointer;">
-							<input id="txt_depDt" class="section_2_2_1" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
-							<input id="txt_depDt_view" class="section_2_2_1" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
+						<div class="section_2_2" id="div_day_selector4" role="calendarPopTxt" style="cursor: pointer;">
+							<input id="txt_BoardingDt2" class="section_2_2_4 boardingDatePicker" type="hidden" title="탑승일 선택" placeholder="탑승일 선택" readonly="readonly">
+							<input id="txt_BoardingDt_view2" class="section_2_2_4 boardingDatePickerView" role="calendarPopInput" type="text" title="탑승일 선택" placeholder="탑승일 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
 						</div>
-						
-						<!-- 승객수, 좌석등급 -->
-						<div class="section_2_3">
-					        <a href="javascript:void(0);" onclick="showPassengerOptions()" class="">
-					            <span class="txt" id="bin_people">승객 1명, 일반석</span>
-					        </a>
-					    </div>
-						
-						<div id="passengerOptions" class="passenger-selector" style="display:none;">
-					        <!-- 성인 명수 선택 -->
-					        <div class="passenger-count">
-					            <label for="adultCount">성인:</label>
-					            <button onclick="adjustCount('adultCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="adultCount">1</span>
-					            <button onclick="adjustCount('adultCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
-					        </div>
-					
-					        <!-- 소아 명수 선택 -->
-					        <div class="passenger-count">
-					            <label for="childCount">소아:</label>
-					            <button onclick="adjustCount('childCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="childCount">0</span>
-					            <button onclick="adjustCount('childCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
-					        </div>
-					
-					        <!-- 유아 명수 선택 -->
-					        <div class="passenger-count">
-					            <label for="infantCount">유아:</label>
-					            <button onclick="adjustCount('infantCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="infantCount">0</span>
-					            <button onclick="adjustCount('infantCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
-					        </div>
-					
-					        <hr>
-					
-					        <!-- 좌석 클래스 선택 -->
-					        <div class="passenger-class">
-					            <label><input type="radio" name="seatClass" value="economy" checked> 일반석</label>
-					            <label><input type="radio" name="seatClass" value="premium-economy"> 프리미엄 일반석</label>
-					            <label><input type="radio" name="seatClass" value="business"> 비즈니스석</label>
-					            <label><input type="radio" name="seatClass" value="first-class"> 일등석</label>
-					        </div>
-					
-					        <!-- 선택 완료 버튼 -->
-					        <button type="button" onclick="completeSelection(event)" class="btn btn-primary btn-complete">선택 완료</button>
-					    </div>
 					    <div class="section_2_5">
 							<span>
 								<button type="button" onclick="plusTrip()" class="section_2_4 plusBtn" title="추가">여정 추가</button>
@@ -2372,56 +2329,10 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 						</div>
 						
 						<!-- 다구간 탑승일 -->
-						<div class="section_2_2" id="div_day_selector" role="calendarPopTxt" style="cursor: pointer;">
-							<input id="txt_depDt" class="section_2_2_1" type="hidden" title="가는날 선택" placeholder="가는날 선택" readonly="readonly">
-							<input id="txt_depDt_view" class="section_2_2_1" type="text" title="가는날 선택" placeholder="가는날 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
+						<div class="section_2_2" id="div_day_selector5" role="calendarPopTxt" style="cursor: pointer;">
+							<input id="txt_BoardingDt3" class="section_2_2_5 boardingDatePicker" type="hidden" title="탑승일 선택" placeholder="탑승일 선택" readonly="readonly">
+							<input id="txt_BoardingDt_view3" class="section_2_2_5 boardingDatePickerView" role="calendarPopInput" type="text" title="탑승일 선택" placeholder="탑승일 선택" readonly="readonly" role="calendarPopInput" style="cursor: pointer;" value="">
 						</div>
-						
-						<!-- 승객수, 좌석등급 -->
-						<div class="section_2_3">
-					        <a href="javascript:void(0);" onclick="showPassengerOptions()" class="">
-					            <span class="txt" id="bin_people">승객 1명, 일반석</span>
-					        </a>
-					    </div>
-						
-						<div id="passengerOptions" class="passenger-selector" style="display:none;">
-					        <!-- 성인 명수 선택 -->
-					        <div class="passenger-count">
-					            <label for="adultCount">성인:</label>
-					            <button onclick="adjustCount('adultCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="adultCount">1</span>
-					            <button onclick="adjustCount('adultCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
-					        </div>
-					
-					        <!-- 소아 명수 선택 -->
-					        <div class="passenger-count">
-					            <label for="childCount">소아:</label>
-					            <button onclick="adjustCount('childCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="childCount">0</span>
-					            <button onclick="adjustCount('childCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
-					        </div>
-					
-					        <!-- 유아 명수 선택 -->
-					        <div class="passenger-count">
-					            <label for="infantCount">유아:</label>
-					            <button onclick="adjustCount('infantCount', -1)" class="btn btn-outline-secondary btn-sm">-</button>
-					            <span id="infantCount">0</span>
-					            <button onclick="adjustCount('infantCount', 1)" class="btn btn-outline-secondary btn-sm">+</button>
-					        </div>
-					
-					        <hr>
-					
-					        <!-- 좌석 클래스 선택 -->
-					        <div class="passenger-class">
-					            <label><input type="radio" name="seatClass" value="economy" checked> 일반석</label>
-					            <label><input type="radio" name="seatClass" value="premium-economy"> 프리미엄 일반석</label>
-					            <label><input type="radio" name="seatClass" value="business"> 비즈니스석</label>
-					            <label><input type="radio" name="seatClass" value="first-class"> 일등석</label>
-					        </div>
-					
-					        <!-- 선택 완료 버튼 -->
-					        <button type="button" onclick="completeSelection(event)" class="btn btn-primary btn-complete">선택 완료</button>
-					    </div>					    
 					</li>
 				</ul>
 			</fieldset>
@@ -2467,8 +2378,49 @@ $(document).ready(() => {
 
 //--------------------------------------------------------------------------------
 
+	// 탭 이동 시 값 초기화
+	/* function resetPassengerOptions(tabType) {
+	    var parent = document.getElementById('passengerOptions' + tabType);
+	    parent.querySelector('.adultCount').innerText = '1';
+	    parent.querySelector('.childCount').innerText = '0';
+	    parent.querySelector('.infantCount').innerText = '0';
+	    var seatClassOptions = parent.querySelectorAll('input[name="seatClass"]');
+	    seatClassOptions.forEach(option => {
+	        option.checked = (option.value === 'economy');
+	    });
+	
+	    document.querySelector('.depDatePicker').value = '';
+	    document.querySelector('.depDatePickerView').value = '';
+	    document.querySelector('.arrDatePicker').value = '';
+	    document.querySelector('.arrDatePickerView').value = '';
+	    document.querySelector('.boardingDatePicker').value = '';
+	    document.querySelector('.boardingDatePickerView').value = '';
+	
+	    updatePassengerSummary(tabType);
+	
+	} */
+	function resetPassengerOptions(tabType) {
+	    var parent = document.getElementById('passengerOptions' + tabType);
+	    parent.querySelector('.adultCount').innerText = '1';
+	    parent.querySelector('.childCount').innerText = '0';
+	    parent.querySelector('.infantCount').innerText = '0';
+
+	    var seatClassOptions = parent.querySelectorAll('input[name="seatClass"]');
+	    seatClassOptions.forEach(option => {
+	        option.checked = (option.value === 'economy');
+	    });
+
+	    var datePickers = document.querySelectorAll('.depDatePicker, .depDatePickerView, .arrDatePicker, .arrDatePickerView, .boardingDatePicker, .boardingDatePickerView');
+	    datePickers.forEach(picker => {
+	        picker.value = '';
+	    });
+
+	    updatePassengerSummary(tabType);
+	}
+
 	function openscriptCode1() {
         // 왕복 선택 시 실행할 내용
+        resetPassengerOptions('RT');
         document.querySelector('.div_search1').style.display = 'block';
         document.querySelector('.div_search2').style.display = 'none';
         document.querySelector('.div_search3').style.display = 'none';
@@ -2476,6 +2428,7 @@ $(document).ready(() => {
 
 	function openscriptCode2() {
         // 편도 선택 시 실행할 내용
+        resetPassengerOptions('OW');
         document.querySelector('.div_search1').style.display = 'none';
         document.querySelector('.div_search2').style.display = 'block';
         document.querySelector('.div_search3').style.display = 'none';
@@ -2483,6 +2436,7 @@ $(document).ready(() => {
 
     function openscriptCode3() {
         // 다구간 선택 시 실행할 내용
+        resetPassengerOptions('MT');
         document.querySelector('.div_search1').style.display = 'none';
         document.querySelector('.div_search2').style.display = 'none';
         document.querySelector('.div_search3').style.display = 'block';
@@ -2597,12 +2551,21 @@ $(function() {
         var depDatePicker = $(".section_2_2_1");
         //var arrDatePicker = $("#txt_arrDt_view");
         var arrDatePicker = $(".section_2_2_2");
+
+        var boardingDatePicker1 = $(".section_2_2_3");
+        console.dir(boardingDatePicker1);
+        var boardingDatePicker2 = $(".section_2_2_4");
+        console.dir(boardingDatePicker2);
+        var boardingDatePicker3 = $(".section_2_2_5");
         
         // 선택된 가는날과 오는날을 저장할 변수
         var depDateSelected = false;
         var arrDateSelected = false;
+        var boardingDateSelected1 = false;
+        var boardingDateSelected2 = false;
+        var boardingDateSelected3 = false;
 
-        // Datepicker 초기화
+        // 출발날짜 Datepicker 초기화
         depDatePicker.datepicker({
             dateFormat: 'yy-mm-dd', // 날짜 형식 설정
             minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
@@ -2629,6 +2592,7 @@ $(function() {
             }
         });
 
+     	// 도착날짜 Datepicker 초기화
         arrDatePicker.datepicker({
             dateFormat: 'yy-mm-dd', // 날짜 형식 설정
             minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
@@ -2638,6 +2602,7 @@ $(function() {
                 
              	// Datepicker로부터 선택한 날짜 가져오기
                 var selectedDate = arrDatePicker.datepicker( "getDate" );
+                console.log(selectedDate); // 선택한 날짜의 문자열 표현 출력
 
                 // 선택한 날짜를 원하는 형식의 문자열로 변환
                 var arrdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate );
@@ -2655,6 +2620,7 @@ $(function() {
             }
         });
 
+        
         // 가는날과 오는날 input 요소를 클릭하면 Datepicker 팝업이 나타나게 설정
         depDatePicker.add(arrDatePicker).on("click", function() {
             $(this).datepicker("show");
@@ -2664,90 +2630,101 @@ $(function() {
 	    $("#initFormCode2").click(function() {
 	        arrDatePicker.val(depDatePicker.val());
 	    });
+	    
     });
+    
+//-----------------다구간 달력---------------------
+/* $(function() {
+    $(".boardingDatePicker").each(function() {
+        $(this).datepicker({
+            dateFormat: 'yy-mm-dd', // 날짜 형식 설정
+            minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
+            onSelect: function(selectedDate) {
+                // 선택한 날짜를 input 요소에 표시
+                $(this).val(selectedDate);
+            }
+        });
+    });
+}); */
+$(function() {
+    $(".boardingDatePickerView").datepicker({
+        dateFormat: 'yy-mm-dd', // 날짜 형식 설정
+        minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
+        onSelect: function(selectedDate) {
+            var hiddenInputId = $(this).attr('id').replace('_view', '');
+            $('#' + hiddenInputId).val(selectedDate); // 선택한 날짜를 hidden input에 설정
+        }
+    });
+});
     
 //---------------------------------------------------------------------------------------------------
 
-// 승객명수 코드
-function showPassengerOptions() {
-            var passengerOptions = document.getElementById('passengerOptions');
-            passengerOptions.style.display = passengerOptions.style.display === 'none' ? 'block' : 'none';
-            //------------------------
-            console.dir(passengerOptions);
-        }
+	// 승객명수 코드
+    function showPassengerOptions(tabType) {
+    	var passengerOptions = document.getElementById('passengerOptions' + tabType);
+        passengerOptions.style.display = passengerOptions.style.display === 'none' ? 'block' : 'none';
+        console.dir(passengerOptions);
+    }
 
-        function adjustCount(id, delta) {
-        	event.preventDefault(); // 기본 동작 막기
-            var countElement = document.getElementById(id);
-            var currentCount = parseInt(countElement.innerText);
-            var newCount = currentCount + delta;
-            if (newCount < 0) { newCount = 0 };
-            countElement.innerText = newCount;
-            //------------------------
-            console.dir(countElement);
-            console.dir(currentCount);
-            console.dir(newCount);
-        }
+    function adjustCount(id, delta, element) {
+    	event.preventDefault(); // 기본 동작 막기
+        var parent = element.closest('.passenger-count');
+        var countElement = parent.querySelector('.' + id);
+        var currentCount = parseInt(countElement.innerText);
+        var newCount = currentCount + delta;
+        if (newCount < 0) { newCount = 0 };
+        countElement.innerText = newCount;
+        console.dir(countElement);
+        console.dir(currentCount);
+        console.dir(newCount);
+    }
 
-        function completeSelection(event) {
-        	//alert('dd')
-        	event.preventDefault(); // 기본 동작 막기
-            updatePassengerSummary();
-            document.getElementById('passengerOptions').style.display = 'none';
-        }
+    function completeSelection(event, tabType) {
+    	event.preventDefault(); // 기본 동작 막기
+       	updatePassengerSummary(tabType);
+        document.getElementById('passengerOptions' + tabType).style.display = 'none';
+    }
 
-        function updatePassengerSummary() {
-            var adultCount = parseInt(document.getElementById('adultCount').innerText);
-            var childCount = parseInt(document.getElementById('childCount').innerText);
-            var infantCount = parseInt(document.getElementById('infantCount').innerText);
-            var totalPassengers = adultCount + childCount + infantCount;
-            var seatClass = document.querySelector('input[name="seatClass"]:checked').value;
-            var summaryText = `승객 \${totalPassengers}명, \${seatClass}`;
-            document.getElementById('bin_people').innerText = summaryText;
-          	//------------------------
-            console.dir(adultCount);
-            console.dir(childCount);
-            console.dir(infantCount);
-            console.dir(totalPassengers);
-            console.dir(seatClass);
-            console.dir(summaryText);
-        }
+    function updatePassengerSummary(tabType) {
+     	var parent = document.getElementById('passengerOptions' + tabType);
+        var adultCount = parseInt(parent.querySelector('.adultCount').innerText);
+        var childCount = parseInt(parent.querySelector('.childCount').innerText);
+        var infantCount = parseInt(parent.querySelector('.infantCount').innerText);
+        var totalPassengers = adultCount + childCount + infantCount;
+        var seatClass = document.querySelector('input[name="seatClass"]:checked').value;
+            
+        var summaryText = `승객 \${totalPassengers}명, \${seatClass}`;
+        var parent2 = document.getElementById('section_2_3_' + tabType);
+        parent2.querySelector('.bin_people').innerText = summaryText;
+            
+        console.dir(adultCount);
+        console.dir(childCount);
+        console.dir(infantCount);
+        console.dir(totalPassengers);
+        console.dir(seatClass);
+        console.dir(summaryText);
+    }
+
 
 //---------------------------------------------------------------------------------------------------
 
 // 선택값 컨트롤러 전송
 function sendSelectionToController() {
 	
+	// -----  변수 선언  -----
 	const activeTab = document.querySelector('.tab-content[style*="display: block"]');
 	const depCityInput = activeTab.querySelector('.depCtyCodeSearch');
 	const ariCityInput = activeTab.querySelector('.ariCtyCodeSearch');
 	
-	const depCity = depCityInput ? depCityInput.value.split(' ')[0] : '';
-	const depCityCode = depCityInput ? depCityInput.value.split(' ')[1] : '';
+	//const depCity = depCityInput ? depCityInput.value.split(' ')[0] : '';
+	//const depCityCode = depCityInput ? depCityInput.value.split(' ')[1] : '';
+	const depCity1 = depCityInput ? depCityInput.value.split(' ')[0] : '';
+	const depCityCode1 = depCityInput ? depCityInput.value.split(' ')[1] : '';
 
-	const ariCity = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
-	const ariCityCode = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
-	
-	// 출발지 값
-    //let depCity = document.querySelector('.depCtyCodeSearch').value.split(' ')[0];
-    //let depCityCode = document.querySelector('.depCtyCodeSearch').value.split(' ')[1];
-    
-	// 도착지 값
-    //let ariCity = document.querySelector('.ariCtyCodeSearch').value.split(' ')[0];
-    //let ariCityCode = document.querySelector('.ariCtyCodeSearch').value.split(' ')[1];
-
-	// 출발 날짜, 도착날짜 값
-    let depDatePicker = $("#txt_depDt_view");
-    let arrDatePicker = $("#txt_arrDt_view");
-    let selectedDate = depDatePicker.datepicker( "getDate" );
-    let depdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate );
-    let selectedDate2 = arrDatePicker.datepicker( "getDate" );
-    let arrdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate2 );
-    
- 	// 편도일 경우 오는날을 선택하지 않으므로 가는날과 같은 값을 사용
-    if (!arrdateString) {
-        arrdateString = depdateString;
-    }
+	//const ariCity = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
+	//const ariCityCode = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
+	const ariCity1 = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
+	const ariCityCode1 = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
     
     // initform, 왕복 편도 다구간 값
     let radioGroup = document.getElementsByName('initform');
@@ -2760,91 +2737,167 @@ function sendSelectionToController() {
     }
     
     // 승객 명수 값
-    let adultCount = parseInt(document.getElementById('adultCount').innerText);
-    let childCount = parseInt(document.getElementById('childCount').innerText);
-    let infantCount = parseInt(document.getElementById('infantCount').innerText);
+    let adultCount = parseInt(document.querySelector('.adultCount').innerText);
+    let childCount = parseInt(document.querySelector('.childCount').innerText);
+    let infantCount = parseInt(document.querySelector('.infantCount').innerText);
     let totalPassengers = adultCount + childCount + infantCount;
 
     // 좌석 등급 값
     let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
-
-    //-------------------------------------------------------
     
-    // 폼 생성
+    // -----  폼 생성  -----
     var form = document.createElement('form');
     form.method = 'POST';
     form.action = '/Airplane/Search';
 
-    // 데이터 추가
+    // -----  데이터 추가  -----
+    
+    // 출발지
     var inputDepCity = document.createElement('input');
     inputDepCity.type = 'hidden';
-    inputDepCity.name = 'depCity';
-    inputDepCity.value = depCity;
+    inputDepCity.name = 'depCity1';
+    inputDepCity.value = depCity1;
     form.appendChild(inputDepCity);
 
+    // 출발지 코드(ENAME)
     var inputDepCityCode = document.createElement('input');
     inputDepCityCode.type = 'hidden';
-    inputDepCityCode.name = 'depCityCode';
-    inputDepCityCode.value = depCityCode;
+    inputDepCityCode.name = 'depCityCode1';
+    inputDepCityCode.value = depCityCode1;
     form.appendChild(inputDepCityCode);
 
+    // 도착지
     var inputAriCity = document.createElement('input');
     inputAriCity.type = 'hidden';
-    inputAriCity.name = 'ariCity';
-    inputAriCity.value = ariCity;
+    inputAriCity.name = 'ariCity1';
+    inputAriCity.value = ariCity1;
     form.appendChild(inputAriCity);
 
+    // 도착지 코드(ENAME)
     var inputAriCityCode = document.createElement('input');
     inputAriCityCode.type = 'hidden';
-    inputAriCityCode.name = 'ariCityCode';
-    inputAriCityCode.value = ariCityCode;
+    inputAriCityCode.name = 'ariCityCode1';
+    inputAriCityCode.value = ariCityCode1;
     form.appendChild(inputAriCityCode);
-
-    var inputDepDate = document.createElement('input');
-    inputDepDate.type = 'hidden';
-    inputDepDate.name = 'depDate';
-    inputDepDate.value = depdateString;
-    form.appendChild(inputDepDate);
-
-    var inputArrDate = document.createElement('input');
-    inputArrDate.type = 'hidden';
-    inputArrDate.name = 'arrdate';
-    inputArrDate.value = arrdateString;
-    form.appendChild(inputArrDate);
     
+    // initform, 왕복, 편도, 다구간
     var inputSelectedValue = document.createElement('input');
     inputSelectedValue.type = 'hidden';
     inputSelectedValue.name = 'initform';
     inputSelectedValue.value = selectedValue;
     form.appendChild(inputSelectedValue);
 
+    // 승객명수 - 성인
     var inputAdultCount = document.createElement('input');
     inputAdultCount.type = 'hidden';
     inputAdultCount.name = 'adultCount';
     inputAdultCount.value = adultCount;
     form.appendChild(inputAdultCount);
-    
+	
+    // 승객명수 - 소아
     var inputChildCount = document.createElement('input');
     inputChildCount.type = 'hidden';
     inputChildCount.name = 'childCount';
     inputChildCount.value = childCount;
     form.appendChild(inputChildCount);
     
+    // 승객명수 - 유아
     var inputInfantCount = document.createElement('input');
     inputInfantCount.type = 'hidden';
     inputInfantCount.name = 'infantCount';
     inputInfantCount.value = infantCount;
     form.appendChild(inputInfantCount);
 
+    // 좌석등급
     var inputSeatClass = document.createElement('input');
     inputSeatClass.type = 'hidden';
     inputSeatClass.name = 'seatClass';
     inputSeatClass.value = seatClass;
     form.appendChild(inputSeatClass);
 
-    document.body.appendChild(form);
+    // 왕복 일 경우 오는날 전송
+    const initform = form.elements['initform'].value;
+    if (initform === 'RT') {
+    
+		// 출발지 - 왕복
+		const depCity2 = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
+		const depCityCode2 = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
+		
+		var inputDepCity2 = document.createElement('input');
+	    inputDepCity2.type = 'hidden';
+	    inputDepCity2.name = 'depCity2';
+	    inputDepCity2.value = depCity2;
+	    form.appendChild(inputDepCity2);
 
+	    var inputDepCityCode2 = document.createElement('input');
+	    inputDepCityCode2.type = 'hidden';
+	    inputDepCityCode2.name = 'depCityCode2';
+	    inputDepCityCode2.value = depCityCode2;
+	    form.appendChild(inputDepCityCode2);
+	    
+		// 도착지 - 왕복
+		const ariCity2 = depCityInput ? depCityInput.value.split(' ')[0] : '';
+		const ariCityCode2 = depCityInput ? depCityInput.value.split(' ')[1] : '';
+    	
+	    var inputAriCity2 = document.createElement('input');
+	    inputAriCity2.type = 'hidden';
+	    inputAriCity2.name = 'ariCity2';
+	    inputAriCity2.value = ariCity2;
+	    form.appendChild(inputAriCity2);
+
+	    var inputAriCityCode2 = document.createElement('input');
+	    inputAriCityCode2.type = 'hidden';
+	    inputAriCityCode2.name = 'ariCityCode2';
+	    inputAriCityCode2.value = ariCityCode2;
+	    form.appendChild(inputAriCityCode2);
+	    
+    	// 오는날짜 - 왕복
+	    /* let arrDatePicker = $("#txt_arrDt_view");
+	    let selectedDate2 = arrDatePicker.datepicker( "getDate" );
+	    let arrdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate2 );
+	    
+	    var inputArrDate = document.createElement('input');
+	    inputArrDate.type = 'hidden';
+	    inputArrDate.name = 'depDate2';
+	    inputArrDate.value = arrdateString;
+	    form.appendChild(inputArrDate); */
+	    const arrDatePickers = [$("#txt_arrDt_view"), $("#txt_depDt_view")]; // 여러 날짜 선택기를 배열로 저장
+	    arrDatePickers.forEach((datePicker, index) => {
+	        const selectedDate = datePicker.datepicker("getDate");
+	        const arrdateString = $.datepicker.formatDate("yy-mm-dd", selectedDate);
+	        
+	        var inputArrDate = document.createElement('input');
+	        inputArrDate.type = 'hidden';
+	        inputArrDate.name = 'depDate2[]'; // 배열로 전달
+	        inputArrDate.value = arrdateString;
+	        form.appendChild(inputArrDate);
+	    });
+    
+    } else {
+        // 왕복이 아닌 경우 오는 날짜 필드를 비움
+        //form.elements['arrDate'].value = '';
+        //$("#txt_arrDt_view").value = '';
+        
+        // 출발 날짜, 오는 날짜 값
+	    let depDatePicker = $("#txt_depDt_view");
+	    let selectedDate = depDatePicker.datepicker( "getDate" );
+	    let depdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate );
+	    
+	    // 출발날짜
+	    var inputDepDate = document.createElement('input');
+	    inputDepDate.type = 'hidden';
+	    inputDepDate.name = 'depDate1';
+	    inputDepDate.value = depdateString;
+	    form.appendChild(inputDepDate);
+        
+        const depCity2 = '';
+        const depCityCode2 = '';
+        const ariCity2 = '';
+        const ariCityCode2 = '';
+    }
+    
     // 폼 제출
+    document.body.appendChild(form);
     form.submit();
 }  
 
