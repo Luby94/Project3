@@ -1,14 +1,5 @@
 package com.escape.login.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
 	
     private int user_idx;
@@ -63,5 +54,5 @@ public class User {
 		return "User [user_idx=" + user_idx + ", id=" + id + ", passwd=" + passwd + ", email=" + email + ", type="
 				+ type + "]";
 	}
-    
+
 }

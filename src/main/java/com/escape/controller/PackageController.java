@@ -1,6 +1,5 @@
 package com.escape.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +24,13 @@ public class PackageController {
 	
 	@RequestMapping("/Home")
 	public  ModelAndView   home() {
-		//List<CategoryVo> categoryList = packageMapper.getCategory();
+		List<CategoryVo> categoryList = packageMapper.getCategory();
 		
 		
 		
 		ModelAndView mv = new ModelAndView();
 		
-		//mv.addObject("categoryList",categoryList);
+		mv.addObject("categoryList",categoryList);
 		mv.setViewName("package/package_home");
 		return mv;
 	}

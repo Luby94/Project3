@@ -13,17 +13,35 @@ public class KakaoPayController {
     @Autowired
     private KakaoPayService kakaoPayService;
 
-    @GetMapping("/kakaoPay")
-    @ResponseBody
-    public String kakaoPay(@RequestParam String orderId, @RequestParam String userId, @RequestParam String itemName,
-                           @RequestParam int quantity, @RequestParam int totalAmount, @RequestParam int vatAmount) {
-        return kakaoPayService.readyToPay(orderId, userId, itemName, quantity, totalAmount, vatAmount);
-    }
+//    @GetMapping("/kakaoPay")
+//    @ResponseBody
+//    public String kakaoPay(
+//	    		@RequestParam String orderId, 
+//	    		@RequestParam String userId, 
+//	    		@RequestParam String itemName,
+//	            @RequestParam int totalCount, 
+//	            @RequestParam int totalPrice
+//            ) {
+//    	
+//        return kakaoPayService.readyToPay(orderId, userId, itemName, totalCount, totalPrice);
+//        
+//    }
+    
+    //----------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping("/kakaoPaySuccess")
-    public String kakaoPaySuccess(@RequestParam int applyIdx, @RequestParam int cardIdx, @RequestParam int userIdx,
-                                  @RequestParam int packageIdx, @RequestParam int roomIdx, @RequestParam int airplaneTimeIdx,
-                                  @RequestParam int state, @RequestParam int applySu, @RequestParam String created) {
+    public String kakaoPaySuccess(
+	    		@RequestParam int applyIdx, 
+	    		@RequestParam int cardIdx, 
+	    		@RequestParam int userIdx,
+	    		@RequestParam int packageIdx, 
+	    		@RequestParam int roomIdx, 
+	    		@RequestParam int airplaneTimeIdx,
+	    		@RequestParam int state, 
+	    		@RequestParam int applySu, 
+	    		@RequestParam String created
+    		) {
+    	
         PaymentVo payment = new PaymentVo();
         
         payment.setApply_idx(applyIdx);
@@ -39,12 +57,17 @@ public class KakaoPayController {
         kakaoPayService.savePayment(payment);
     	
         return "success";
+        
     }
+    
+    //----------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping("/kakaoPayCancel")
     public String kakaoPayCancel() {
         return "cancel";
     }
+    
+    //----------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping("/kakaoPayFail")
     public String kakaoPayFail() {
