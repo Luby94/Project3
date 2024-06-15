@@ -2569,6 +2569,7 @@ $(function() {
         depDatePicker.datepicker({
             dateFormat: 'yy-mm-dd', // 날짜 형식 설정
             minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
+            numberOfMonths: 2, // 두 개의 월을 표시
             onSelect: function(selectedDate) {
                 // 선택한 날짜를 input 요소에 표시
                 depDatePicker.val(selectedDate);
@@ -2596,6 +2597,7 @@ $(function() {
         arrDatePicker.datepicker({
             dateFormat: 'yy-mm-dd', // 날짜 형식 설정
             minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
+            numberOfMonths: 2, // 두 개의 월을 표시
             onSelect: function(selectedDate) {
                 // 선택한 날짜를 input 요소에 표시
                 arrDatePicker.val(selectedDate);
@@ -2650,6 +2652,7 @@ $(function() {
     $(".boardingDatePickerView").datepicker({
         dateFormat: 'yy-mm-dd', // 날짜 형식 설정
         minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
+        numberOfMonths: 2, // 두 개의 월을 표시
         onSelect: function(selectedDate) {
             var hiddenInputId = $(this).attr('id').replace('_view', '');
             $('#' + hiddenInputId).val(selectedDate); // 선택한 날짜를 hidden input에 설정

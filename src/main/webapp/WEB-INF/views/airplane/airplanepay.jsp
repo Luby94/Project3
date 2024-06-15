@@ -84,6 +84,7 @@ h1 {
 			</div>
 			<div>
 				<span>성인 수:</span> ${adultCount}
+				
 			</div>
 			<div>
 				<span>아동 수:</span> ${childCount}
@@ -92,7 +93,7 @@ h1 {
 				<span>유아 수:</span> ${infantCount}
 			</div>
 			<div>
-				<span>가격:</span> ${totalPrice}
+				<span>전체 가격:</span> ${totalPrice}
 			</div>
 		</div>
 		<div class="payment-section">
