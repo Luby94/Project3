@@ -2746,7 +2746,7 @@ function sendSelectionToController() {
     let totalPassengers = adultCount + childCount + infantCount;
 
     // 좌석 등급 값
-    let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
+    //let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
     
     // -----  폼 생성  -----
     var form = document.createElement('form');
@@ -2811,11 +2811,30 @@ function sendSelectionToController() {
     inputInfantCount.value = infantCount;
     form.appendChild(inputInfantCount);
 
-    // 좌석등급
+	// 좌석 등급 값
+    let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
+    let stype;
+    switch (seatClass) {
+      case 'economy':
+        stype = 1;
+        break;
+      case 'premium-economy':
+        stype = 2;
+        break;
+      case 'business':
+        stype = 3;
+        break;
+      case 'first-class':
+        stype = 4;
+        break;
+      default:
+        stype = 1; // 기본값 설정 (필요한 경우)
+    }
+	
     var inputSeatClass = document.createElement('input');
     inputSeatClass.type = 'hidden';
     inputSeatClass.name = 'seatClass';
-    inputSeatClass.value = seatClass;
+    inputSeatClass.value = stype;
     form.appendChild(inputSeatClass);
 
     // 왕복 일 경우 오는날 전송
