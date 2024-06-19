@@ -2379,26 +2379,6 @@ $(document).ready(() => {
 //--------------------------------------------------------------------------------
 
 	// 탭 이동 시 값 초기화
-	/* function resetPassengerOptions(tabType) {
-	    var parent = document.getElementById('passengerOptions' + tabType);
-	    parent.querySelector('.adultCount').innerText = '1';
-	    parent.querySelector('.childCount').innerText = '0';
-	    parent.querySelector('.infantCount').innerText = '0';
-	    var seatClassOptions = parent.querySelectorAll('input[name="seatClass"]');
-	    seatClassOptions.forEach(option => {
-	        option.checked = (option.value === 'economy');
-	    });
-	
-	    document.querySelector('.depDatePicker').value = '';
-	    document.querySelector('.depDatePickerView').value = '';
-	    document.querySelector('.arrDatePicker').value = '';
-	    document.querySelector('.arrDatePickerView').value = '';
-	    document.querySelector('.boardingDatePicker').value = '';
-	    document.querySelector('.boardingDatePickerView').value = '';
-	
-	    updatePassengerSummary(tabType);
-	
-	} */
 	function resetPassengerOptions(tabType) {
 	    var parent = document.getElementById('passengerOptions' + tabType);
 	    parent.querySelector('.adultCount').innerText = '1';
@@ -2636,18 +2616,6 @@ $(function() {
     });
     
 //-----------------다구간 달력---------------------
-/* $(function() {
-    $(".boardingDatePicker").each(function() {
-        $(this).datepicker({
-            dateFormat: 'yy-mm-dd', // 날짜 형식 설정
-            minDate: 0, // 오늘 이후의 날짜만 선택 가능하도록 설정
-            onSelect: function(selectedDate) {
-                // 선택한 날짜를 input 요소에 표시
-                $(this).val(selectedDate);
-            }
-        });
-    });
-}); */
 $(function() {
     $(".boardingDatePickerView").datepicker({
         dateFormat: 'yy-mm-dd', // 날짜 형식 설정
@@ -2666,6 +2634,7 @@ $(function() {
     function showPassengerOptions(tabType) {
     	var passengerOptions = document.getElementById('passengerOptions' + tabType);
         passengerOptions.style.display = passengerOptions.style.display === 'none' ? 'block' : 'none';
+        console.dir('==== passengerOptions ====');
         console.dir(passengerOptions);
     }
 
@@ -2700,14 +2669,27 @@ $(function() {
         var parent2 = document.getElementById('section_2_3_' + tabType);
         parent2.querySelector('.bin_people').innerText = summaryText;
             
-        console.dir(adultCount);
+        console.log('====adultCount====');
+        console.log(adultCount);
+        console.log('====childCount====');
         console.dir(childCount);
+        console.log('====infantCount====');
         console.dir(infantCount);
+        console.log('====totalPassengers====');
         console.dir(totalPassengers);
         console.dir(seatClass);
         console.dir(summaryText);
     }
-
+    
+    function getCurrentTabType() {
+    	  var tabs = document.getElementsByName('initform');
+    	  for (var i = 0; i < tabs.length; i++) {
+    	    if (tabs[i].checked) {
+    	      return tabs[i].value;
+    	    }
+    	  }
+    	  return 'RT'; // 기본값으로 'RT' 반환
+    }
 
 //---------------------------------------------------------------------------------------------------
 
@@ -2719,13 +2701,9 @@ function sendSelectionToController() {
 	const depCityInput = activeTab.querySelector('.depCtyCodeSearch');
 	const ariCityInput = activeTab.querySelector('.ariCtyCodeSearch');
 	
-	//const depCity = depCityInput ? depCityInput.value.split(' ')[0] : '';
-	//const depCityCode = depCityInput ? depCityInput.value.split(' ')[1] : '';
 	const depCity1 = depCityInput ? depCityInput.value.split(' ')[0] : '';
 	const depCityCode1 = depCityInput ? depCityInput.value.split(' ')[1] : '';
 
-	//const ariCity = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
-	//const ariCityCode = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
 	const ariCity1 = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
 	const ariCityCode1 = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
     
@@ -2740,14 +2718,13 @@ function sendSelectionToController() {
     }
     
     // 승객 명수 값
-    let adultCount = parseInt(document.querySelector('.adultCount').innerText);
-    let childCount = parseInt(document.querySelector('.childCount').innerText);
-    let infantCount = parseInt(document.querySelector('.infantCount').innerText);
+    var currentTabType = getCurrentTabType();
+    let adultCount = parseInt(document.querySelector(`#passengerOptions\${currentTabType} .adultCount`).innerText);
+    let childCount = parseInt(document.querySelector(`#passengerOptions\${currentTabType} .childCount`).innerText);
+    let infantCount = parseInt(document.querySelector(`#passengerOptions\${currentTabType} .infantCount`).innerText);
+    
     let totalPassengers = adultCount + childCount + infantCount;
 
-    // 좌석 등급 값
-    //let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
-    
     // -----  폼 생성  -----
     var form = document.createElement('form');
     form.method = 'POST';
@@ -2839,6 +2816,12 @@ function sendSelectionToController() {
 
     // 왕복 일 경우 오는날 전송
     const initform = form.elements['initform'].value;
+    var inputInitform = document.createElement('input');
+    inputInitform.type = 'hidden';
+    inputInitform.name = 'initform';
+    inputInitform.value = initform;
+    form.appendChild(inputInitform);
+    
     if (initform === 'RT') {
     
 		// 출발지 - 왕복
@@ -2874,15 +2857,6 @@ function sendSelectionToController() {
 	    form.appendChild(inputAriCityCode2);
 	    
     	// 오는날짜 - 왕복
-	    /* let arrDatePicker = $("#txt_arrDt_view");
-	    let selectedDate2 = arrDatePicker.datepicker( "getDate" );
-	    let arrdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate2 );
-	    
-	    var inputArrDate = document.createElement('input');
-	    inputArrDate.type = 'hidden';
-	    inputArrDate.name = 'depDate2';
-	    inputArrDate.value = arrdateString;
-	    form.appendChild(inputArrDate); */
 	    const arrDatePickers = [$("#txt_depDt_view"), $("#txt_arrDt_view")]; // 여러 날짜 선택기를 배열로 저장
 	    arrDatePickers.forEach((datePicker, index) => {
 	        const selectedDate = datePicker.datepicker("getDate");
@@ -2897,8 +2871,6 @@ function sendSelectionToController() {
     
     } else {
         // 왕복이 아닌 경우 오는 날짜 필드를 비움
-        //form.elements['arrDate'].value = '';
-        //$("#txt_arrDt_view").value = '';
         
         // 출발 날짜, 오는 날짜 값
 	    let depDatePicker = $("#txt_depDt_view");
