@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.escape.airplane.domain.AirplaneSearchVo;
+import com.escape.airplane.domain.AirplaneTimeVo;
 import com.escape.airplane.domain.AirportVo;
 import com.escape.airplane.domain.CityVo;
 
@@ -24,9 +25,13 @@ public interface AirplaneMapper {
 
 	int getUserIdx(Object object);
 	
-	int getPriceInfo(BigDecimal airplaneTimeIdx, BigDecimal ptypeIdx, int stype);
+	int getPriceInfo(int airplaneTimeIdx, int ptypeIdx, int stype);
 	
 	List<Map<String, Object>> getFilteredFlights(AirplaneSearchVo airplaneSearchVo);
 	//List<Map<String, Object>> getFilteredFlights(List<AirplaneSearchVo> airplaneSearchVo);
+	
+	//List<AirplaneTimeVo> getFlightInfo(Map<String, Object> params);
+	List<AirplaneTimeVo> getOneWayFlightInfo(Map<String, Object> params);
+	List<AirplaneTimeVo> getRoundTripFlightInfo(Map<String, Object> params);
 	
 }

@@ -2699,13 +2699,13 @@ function sendSelectionToController() {
 	// -----  변수 선언  -----
 	const activeTab = document.querySelector('.tab-content[style*="display: block"]');
 	const depCityInput = activeTab.querySelector('.depCtyCodeSearch');
-	const ariCityInput = activeTab.querySelector('.ariCtyCodeSearch');
+	const arrCityInput = activeTab.querySelector('.ariCtyCodeSearch');
 	
 	const depCity1 = depCityInput ? depCityInput.value.split(' ')[0] : '';
 	const depCityCode1 = depCityInput ? depCityInput.value.split(' ')[1] : '';
 
-	const ariCity1 = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
-	const ariCityCode1 = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
+	const arrCity1 = arrCityInput ? arrCityInput.value.split(' ')[0] : '';
+	const arrCityCode1 = arrCityInput ? arrCityInput.value.split(' ')[1] : '';
     
     // initform, 왕복 편도 다구간 값
     let radioGroup = document.getElementsByName('initform');
@@ -2747,18 +2747,18 @@ function sendSelectionToController() {
     form.appendChild(inputDepCityCode);
 
     // 도착지
-    var inputAriCity = document.createElement('input');
-    inputAriCity.type = 'hidden';
-    inputAriCity.name = 'ariCity1';
-    inputAriCity.value = ariCity1;
-    form.appendChild(inputAriCity);
+    var inputArrCity = document.createElement('input');
+    inputArrCity.type = 'hidden';
+    inputArrCity.name = 'arrCity1';
+    inputArrCity.value = arrCity1;
+    form.appendChild(inputArrCity);
 
     // 도착지 코드(ENAME)
-    var inputAriCityCode = document.createElement('input');
-    inputAriCityCode.type = 'hidden';
-    inputAriCityCode.name = 'ariCityCode1';
-    inputAriCityCode.value = ariCityCode1;
-    form.appendChild(inputAriCityCode);
+    var inputArrCityCode = document.createElement('input');
+    inputArrCityCode.type = 'hidden';
+    inputArrCityCode.name = 'arrCityCode1';
+    inputArrCityCode.value = arrCityCode1;
+    form.appendChild(inputArrCityCode);
     
     // initform, 왕복, 편도, 다구간
     var inputSelectedValue = document.createElement('input');
@@ -2790,6 +2790,13 @@ function sendSelectionToController() {
 
 	// 좌석 등급 값
     let seatClass = document.querySelector('input[name="seatClass"]:checked').value;
+    
+	var inputSeatClass = document.createElement('input');
+    inputSeatClass.type = 'hidden';
+    inputSeatClass.name = 'seatClass';
+    inputSeatClass.value = seatClass;
+    form.appendChild(inputSeatClass);
+    
     let stype;
     switch (seatClass) {
       case 'economy':
@@ -2807,12 +2814,12 @@ function sendSelectionToController() {
       default:
         stype = 1; // 기본값 설정 (필요한 경우)
     }
-	
-    var inputSeatClass = document.createElement('input');
-    inputSeatClass.type = 'hidden';
-    inputSeatClass.name = 'seatClass';
-    inputSeatClass.value = stype;
-    form.appendChild(inputSeatClass);
+
+    var inputStype = document.createElement('input');
+    inputStype.type = 'hidden';
+    inputStype.name = 'stype';
+    inputStype.value = stype;
+    form.appendChild(inputStype);
 
     // 왕복 일 경우 오는날 전송
     const initform = form.elements['initform'].value;
@@ -2825,8 +2832,8 @@ function sendSelectionToController() {
     if (initform === 'RT') {
     
 		// 출발지 - 왕복
-		const depCity2 = ariCityInput ? ariCityInput.value.split(' ')[0] : '';
-		const depCityCode2 = ariCityInput ? ariCityInput.value.split(' ')[1] : '';
+		const depCity2 = arrCityInput ? arrCityInput.value.split(' ')[0] : '';
+		const depCityCode2 = arrCityInput ? arrCityInput.value.split(' ')[1] : '';
 		
 		var inputDepCity2 = document.createElement('input');
 	    inputDepCity2.type = 'hidden';
@@ -2841,38 +2848,48 @@ function sendSelectionToController() {
 	    form.appendChild(inputDepCityCode2);
 	    
 		// 도착지 - 왕복
-		const ariCity2 = depCityInput ? depCityInput.value.split(' ')[0] : '';
-		const ariCityCode2 = depCityInput ? depCityInput.value.split(' ')[1] : '';
+		const arrCity2 = depCityInput ? depCityInput.value.split(' ')[0] : '';
+		const arrCityCode2 = depCityInput ? depCityInput.value.split(' ')[1] : '';
     	
-	    var inputAriCity2 = document.createElement('input');
-	    inputAriCity2.type = 'hidden';
-	    inputAriCity2.name = 'ariCity2';
-	    inputAriCity2.value = ariCity2;
-	    form.appendChild(inputAriCity2);
+	    var inputArrCity2 = document.createElement('input');
+	    inputArrCity2.type = 'hidden';
+	    inputArrCity2.name = 'arrCity2';
+	    inputArrCity2.value = arrCity2;
+	    form.appendChild(inputArrCity2);
 
-	    var inputAriCityCode2 = document.createElement('input');
-	    inputAriCityCode2.type = 'hidden';
-	    inputAriCityCode2.name = 'ariCityCode2';
-	    inputAriCityCode2.value = ariCityCode2;
-	    form.appendChild(inputAriCityCode2);
+	    var inputArrCityCode2 = document.createElement('input');
+	    inputArrCityCode2.type = 'hidden';
+	    inputArrCityCode2.name = 'arrCityCode2';
+	    inputArrCityCode2.value = arrCityCode2;
+	    form.appendChild(inputArrCityCode2);
 	    
-    	// 오는날짜 - 왕복
-	    const arrDatePickers = [$("#txt_depDt_view"), $("#txt_arrDt_view")]; // 여러 날짜 선택기를 배열로 저장
-	    arrDatePickers.forEach((datePicker, index) => {
-	        const selectedDate = datePicker.datepicker("getDate");
-	        const arrdateString = $.datepicker.formatDate("yy-mm-dd", selectedDate);
-	        
-	        var inputArrDate = document.createElement('input');
-	        inputArrDate.type = 'hidden';
-	        inputArrDate.name = 'depDate2[]'; // 배열로 전달
-	        inputArrDate.value = arrdateString;
-	        form.appendChild(inputArrDate);
-	    });
-    
+	 	// 출발 날짜 값
+	    let depDatePicker = $("#txt_depDt_view");
+	    let selectedDate1 = depDatePicker.datepicker( "getDate" );
+	    let depdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate1 );
+	    
+	    // 출발날짜
+	    var inputDepDate = document.createElement('input');
+	    inputDepDate.type = 'hidden';
+	    inputDepDate.name = 'depDate';
+	    inputDepDate.value = depdateString;
+	    form.appendChild(inputDepDate);
+	    
+    	// 오는 날짜 값 - 왕복
+    	let arrDatePicker = $("#txt_arrDt_view");
+	    let selectedDate2 = arrDatePicker.datepicker( "getDate" );
+	    let arrdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate2 );
+    	
+	    var inputArrDate = document.createElement('input');
+	    inputArrDate.type = 'hidden';
+	    inputArrDate.name = 'arrDate';
+	    inputArrDate.value = arrdateString;
+	    form.appendChild(inputArrDate);
+	    
     } else {
         // 왕복이 아닌 경우 오는 날짜 필드를 비움
         
-        // 출발 날짜, 오는 날짜 값
+        // 출발 날짜 값
 	    let depDatePicker = $("#txt_depDt_view");
 	    let selectedDate = depDatePicker.datepicker( "getDate" );
 	    let depdateString = $.datepicker.formatDate( "yy-mm-dd", selectedDate );
@@ -2880,14 +2897,15 @@ function sendSelectionToController() {
 	    // 출발날짜
 	    var inputDepDate = document.createElement('input');
 	    inputDepDate.type = 'hidden';
-	    inputDepDate.name = 'depDate1';
+	    inputDepDate.name = 'depDate';
 	    inputDepDate.value = depdateString;
 	    form.appendChild(inputDepDate);
         
         const depCity2 = '';
         const depCityCode2 = '';
-        const ariCity2 = '';
-        const ariCityCode2 = '';
+        const arrCity2 = '';
+        const arrCityCode2 = '';
+        const arrDate = '';
     }
     
     // 폼 제출
