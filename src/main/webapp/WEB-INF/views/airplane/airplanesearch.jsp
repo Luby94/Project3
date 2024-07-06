@@ -587,24 +587,8 @@ function confirmPayment(event) {
 	  
 	  <div class="content">
 	    <c:choose>
-	        <c:when test="${not empty flightInfo}">
+	        <c:when test="${flightInfo != null && flightInfo.equals('RT')}">
 	            <c:forEach items="${flightInfo}" var="flight" varStatus="status">
-	            
-	            	<!-- 새벽 00:00 ~ 06:00 -->
-	            	<!-- 
-	            	<div class="flight-wrapper" data-time="06">
-					    
-					</div>
-					 -->
-					<div class="flight-wrapper" data-time="12">
-					    <!-- 오전 06:00 ~ 12:00 -->
-					</div>
-					<div class="flight-wrapper" data-time="18">
-					    <!-- 오후 12:00 ~ 18:00 -->
-					</div>
-					<div class="flight-wrapper" data-time="24">
-					    <!-- 야간 18:00 ~ 24:00 -->
-					</div>
 	            
 	                <div class="flight-wrapper" data-time="06">
 	                    <div class="flight-header">
@@ -712,9 +696,89 @@ function confirmPayment(event) {
 	            </c:forEach>
 	        </c:when>
 	        <c:otherwise>
-	            <div>
-	                <p>검색 결과가 없습니다.</p>
-	            </div>
+	            <c:forEach items="${flightInfo}" var="flight" varStatus="status">
+	            
+	                <div class="flight-wrapper" data-time="06">
+	                    <div class="flight-header">
+	                        <span class="flight-logo">
+	                            <img src="${flight.logo}" class="spanImg" alt="logo">
+	                            <em>${flight.name}</em>
+	                        </span>
+	                        <div class="flight-details-wrapper">
+	                            <div class="flight-details">
+	                                <ul>
+	                                    <li>
+	                                        <div>
+	                                            <span class="fontSetting">
+	                                                <span class="locSetting">${flight.startTime1}
+	                                                    <em>${flight.depCityCode1}
+	                                                        <span>${flight.depCity1}</span>
+	                                                    </em>
+	                                                </span>
+	                                            </span>
+	
+	                                            <span class="time-taken">
+	                                                <img src="/images/arrow.jpg" class="arrowImg" alt="arrow">
+	                                                <em>${ flight.durationhour }시간 ${ flight.durationminute }분</em>
+	                                            </span>
+	                                            <span class="fontSetting">
+	                                                <span class="locSetting">${flight.endTime1}
+	                                                    <em>${flight.arrCityCode1}
+	                                                        <span>${flight.arrCity1}</span>
+	                                                    </em>
+	                                                </span>
+	                                            </span>
+	                                            <br>
+	                                            <span>직항</span>
+	                                        </div>
+	                                    </li>
+	                                </ul>
+	                            </div>
+	                        </div>
+	                        <form class="paymentForm" action="/Airplane/AirplanePay" method="POST">
+							<input type="hidden" name="orderId" value="${ flight.airplane_time_idx }">
+							<input type="hidden" name="userId" value="${ sessionScope.login.id }">
+							<input type="hidden" name="itemName" value="${ flight.name }">
+							<input type="hidden" name="seatClass" value="${ flight.seatClass }">
+							<input type="hidden" name="adultCount" value="${ flight.adultCount }">
+							<input type="hidden" name="childCount" value="${ flight.childCount }">
+							<input type="hidden" name="infantCount" value="${ flight.infantCount }">
+							<%-- <input type="hidden" name="adultPrice" value="${ flight.adult_price }">
+							<input type="hidden" name="childprice" value="${ flight.child_price }">
+							<input type="hidden" name="infantprice" value="${ flight.infant_price }"> --%>
+							<input type="hidden" name="startdate" value="${ flight.startTime1 }">
+							<input type="hidden" name="departureloc" value="${ flight.departure_loc }">
+							<input type="hidden" name="arrivalloc" value="${ flight.arrival_loc }">
+							<input type="hidden" name="stypeidx" value="${ flight.stype_idx }">
+				              <span class="price-info">
+				                <button type="submit" class="reservationBtn"
+						            data-airplane-time-idx="${ flight.airplane_time_idx }" 
+						            data-user-id="${ sessionscope.login.id }"
+						            data-airplane-name="${ flight.name }"
+						            data-seatclass="${ flight.seatClass }"
+						            data-adultcount="${ flight.adultCount }"
+						            data-childcount="${ flight.childCount }"
+						            data-infantcount="${ flight.infantCount }"
+						            data-gostarttime="${ flight.startTime1 }"
+									data-goendtime="${ flight.endTime1 }"
+						            data-departureloc="${ flight.departure_loc }"
+						            data-arrivalloc="${ flight.arrival_loc }"
+						            data-godepCity="${ flight.depCity1 }"
+						            data-goarrCity="${ flight.arrCity1 }"
+						            data-stypeidx="${ flight.stype_idx }"
+						            data-ptypeList="${ params.ptypeList }"
+						            data-flights="[[ ${ flight.startTime1 } ],[ ${ flight.endTime1 } ]]"
+						            onclick="confirmPayment(event)"
+						        >예약</button>
+				                <div>
+				                  <strong>${flight.totalPrice} KRW</strong>
+				                </div>
+				              </span>
+				            </form>
+	                    </div>
+	                </div>
+	                <hr class="short" />
+	             </c:forEach>
 	        </c:otherwise>
 	    </c:choose>
 	</div>
@@ -779,160 +843,282 @@ function toggleVisibility(elementId) {
 </script>
 
 <!-- 필터링 js -->
-<script type="text/javascript">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
 
-document.addEventListener('DOMContentLoaded', () => {
-    const departureCheckboxes = document.querySelectorAll("input[name='departureTimes']");
-    const flightWrappers = document.querySelectorAll('.flight-wrapper');
+    const params = '${ params }';
+    console.log('params:', params);
 
-    departureCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-            filterFlights();
+    const id = '${ id }';
+    const depCity1 = '${ depCity1 }';
+    const depCity2 = '${ depCity2 }';
+    const arrCity1 = '${ arrCity1 }';
+    const arrCity2 = '${ arrCity2 }';
+    const depCityCode1 = '${ depCityCode1 }';
+    const depCityCode2 = '${ depCityCode2 }';
+    const arrCityCode1 = '${ arrCityCode1 }';
+    const arrCityCode2 = '${ arrCityCode2 }';
+    const depDate = '${ depDate }';
+    const arrDate = '${ arrDate }';
+    const initform = '${ initform }';
+    const seatClass = '${ seatClass }';
+    const stype = '${ stype }';
+    const adultCount = '${ adultCount }';
+    const childCount = '${ childCount }';
+    const infantCount = '${ infantCount }';
+
+    // Function to get checked time ranges
+    function getCheckedTimeRanges() {
+        const checkboxes = document.querySelectorAll('[id^="ckDep_"]');
+        let timeRanges = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                timeRanges.push(checkbox.value);
+            }
+        });
+        return timeRanges;
+    }
+
+    // Function to update flight information on the page
+    function updateFlightInfo(data) {
+	    const flightInfo = data.flightInfo;
+	    const params = data.params;
+	    const contentDiv = document.querySelector('.content');
+	    contentDiv.innerHTML = '';
+	
+	    if (params.initform == 'RT') {
+	        const goingDayWrapper = document.createElement('div');
+	        goingDayWrapper.className = 'flight-day-wrapper';
+	        goingDayWrapper.innerHTML = '<h2>가는 날</h2>';
+	        flightInfo.forEach(flight => {
+	            const flightWrapper = document.createElement('div');
+	            flightWrapper.className = 'flight-wrapper';
+	            flightWrapper.setAttribute('data-time', flight.startTime1);
+	            flightWrapper.setAttribute('data-day', '가는날');
+	
+	            flightWrapper.innerHTML = `
+	                        <div class="flight-header">
+	                            <span class="flight-logo">
+	                                <img src="\${flight.logo}" class="spanImg" alt="logo">
+	                                <em>\${flight.name}</em>
+	                            </span>
+	                            <div class="flight-details-wrapper">
+	                                <div class="flight-details">
+	                                    <ul>
+	                                    
+	                                        <li>
+	                                            <div>
+	                                                <span class="fontSetting">
+	                                                    <span class="locSetting">\${flight.startTime1}
+	                                                        <em>\${flight.depCityCode1}
+	                                                            <span>\${flight.depCity1}</span>
+	                                                        </em>
+	                                                    </span>
+	                                                </span>
+	                                                <span class="time-taken">
+	                                                    <img src="/images/arrow.jpg" class="arrowImg" alt="arrow">
+	                                                    <em>\${flight.durationhour}시간 \${flight.durationminute}분</em>
+	                                                </span>
+	                                                <span class="fontSetting">
+	                                                    <span class="locSetting">\${flight.endTime1}
+	                                                        <em>\${flight.arrCityCode1}
+	                                                            <span>\${flight.arrCity1}</span>
+	                                                        </em>
+	                                                    </span>
+	                                                </span>
+	                                                <br>
+	                                            </div>
+	                                        </li>
+	                                        
+	                                        
+	                                        
+	                                        <li>
+	                                            <div>
+	                                                <span class="fontSetting">
+	                                                    <span class="locSetting">\${flight.startTime2}
+	                                                        <em>\${flight.depCityCode2}
+	                                                            <span>\${flight.depCity2}</span>
+	                                                        </em>
+	                                                    </span>
+	                                                </span>
+	                                                <span class="time-taken">
+	                                                    <img src="/images/arrow.jpg" class="arrowImg" alt="arrow">
+	                                                    <em>\${flight.durationhour}시간 \${flight.durationminute}분</em>
+	                                                </span>
+	                                                <span class="fontSetting">
+	                                                    <span class="locSetting">\${flight.endTime2}
+	                                                        <em>\${flight.arrCityCode2}
+	                                                            <span>\${flight.arrCity2}</span>
+	                                                        </em>
+	                                                    </span>
+	                                                </span>
+	                                                <br>
+	                                            </div>
+	                                        </li>
+	                                        
+	                                    </ul>
+	                                </div>
+	                            </div>
+	                            <form class="paymentForm" action="/Airplane/AirplanePay" method="POST">
+	                                <span class="price-info">
+	                                    <button type="submit" class="reservationBtn" onclick="confirmPayment(event)">예약</button>
+	                                    <div>
+	                                        <strong>\${flight.totalPrice} KRW</strong>
+	                                    </div>
+	                                </span>
+	                            </form>
+	                        </div>
+	                    `;
+	            goingDayWrapper.appendChild(flightWrapper);
+	            goingDayWrapper.appendChild(document.createElement('hr')).className = 'short';
+	        });
+	        contentDiv.appendChild(goingDayWrapper);
+	        
+	    } else {
+	    	
+	    	if (params.initform == 'OW') {
+	            const comingDayWrapper = document.createElement('div');
+	            comingDayWrapper.className = 'flight-day-wrapper';
+	            comingDayWrapper.innerHTML = '<h2>가는 날</h2>';
+	            flightInfo.forEach(flight => {
+	                const flightWrapper = document.createElement('div');
+	                flightWrapper.className = 'flight-wrapper';
+	                flightWrapper.setAttribute('data-time', flight.startTime1);
+	                flightWrapper.setAttribute('data-day', '가는날');
+	
+	                flightWrapper.innerHTML = `
+	                            <div class="flight-header">
+	                                <span class="flight-logo">
+	                                    <img src="\${flight.logo}" class="spanImg" alt="logo">
+	                                    <em>\${flight.name}</em>
+	                                </span>
+	                                <div class="flight-details-wrapper">
+	                                    <div class="flight-details">
+	                                        <ul>
+	                                            <li>
+	                                                <div>
+	                                                    <span class="fontSetting">
+	                                                        <span class="locSetting">\${flight.startTime1}
+	                                                            <em>\${flight.depCityCode1}
+	                                                                <span>\${flight.depCity1}</span>
+	                                                            </em>
+	                                                        </span>
+	                                                    </span>
+	                                                    <span class="time-taken">
+	                                                        <img src="/images/arrow.jpg" class="arrowImg" alt="arrow">
+	                                                        <em>\${flight.durationhour}시간 \${flight.durationminute}분</em>
+	                                                    </span>
+	                                                    <span class="fontSetting">
+	                                                        <span class="locSetting">\${flight.endTime1}
+	                                                            <em>\${flight.arrCityCode1}
+	                                                                <span>\${flight.arrCity1}</span>
+	                                                            </em>
+	                                                        </span>
+	                                                    </span>
+	                                                    <br>
+	                                                </div>
+	                                            </li>
+	                                        </ul>
+	                                    </div>
+	                                </div>
+	                                <form class="paymentForm" action="/Airplane/AirplanePay" method="POST">
+	                                    <span class="price-info">
+	                                        <button type="submit" class="reservationBtn" onclick="confirmPayment(event)">예약</button>
+	                                        <div>
+	                                            <strong>\${flight.totalPrice} KRW</strong>
+	                                        </div>
+	                                    </span>
+	                                </form>
+	                            </div>
+	                        `;
+	                comingDayWrapper.appendChild(flightWrapper);
+	                comingDayWrapper.appendChild(document.createElement('hr')).className = 'short';
+	            });
+	            contentDiv.appendChild(comingDayWrapper);
+	        } else {
+	        	const noResultDiv = document.createElement('div');
+		        noResultDiv.innerHTML = '<p>검색 결과가 없습니다.</p>';
+		        contentDiv.appendChild(noResultDiv);
+	        }
+	    }
+	}
+
+    // Initial AJAX request
+    $.ajax({
+        type: 'POST',
+        url: '/Airline/Search',
+        data: {
+            id: id,
+            depCity1: depCity1,
+            arrCity1: arrCity1,
+            depCity2: depCity2,
+            arrCity2: arrCity2,
+            depCityCode1: depCityCode1,
+            depCityCode2: depCityCode2,
+            arrCityCode1: arrCityCode1,
+            arrCityCode2: arrCityCode2,
+            depDate: depDate,
+            arrDate: arrDate,
+            initform: initform,
+            seatClass: seatClass,
+            stype: stype,
+            adultCount: adultCount,
+            childCount: childCount,
+            infantCount: infantCount,
+            timeRanges: getCheckedTimeRanges() // Pass the time ranges
+        },
+        success: function(data) {
+            console.log(data);
+            updateFlightInfo(data);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+
+    // Checkbox change event listener
+    const checkboxes = document.querySelectorAll('[id^="ckDep_"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            console.log(`Checkbox \${checkbox.id} - Checked: \${this.checked}, Value: \${this.value}`);
+            $.ajax({
+                type: 'POST',
+                url: '/Airline/Filter',
+                data: {
+                    checkboxId: checkbox.id,
+                    isChecked: this.checked,
+                    checkboxValue: this.value,
+                    id: '${id}',
+                    depCity1: '${depCity1}',
+                    depCity2: '${depCity2}',
+                    arrCity1: '${arrCity1}',
+                    arrCity2: '${arrCity2}',
+                    depCityCode1: '${depCityCode1}',
+                    depCityCode2: '${depCityCode2}',
+                    arrCityCode1: '${arrCityCode1}',
+                    arrCityCode2: '${arrCityCode2}',
+                    depDate: '${depDate}',
+                    arrDate: '${arrDate}',
+                    initform: '${initform}',
+                    seatClass: '${seatClass}',
+                    stype: '${stype}',
+                    adultCount: '${adultCount}',
+                    childCount: '${childCount}',
+                    infantCount: '${infantCount}',
+                    timeRanges: getCheckedTimeRanges() // Pass the time ranges
+                },
+                success: function(data) {
+                    console.log(data);
+                    updateFlightInfo(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
         });
     });
-    
-    function getParameterByName(name) {
-        const url = window.location.href;
-        const nameEscaped = name.replace(/[\[\]]/g, '\\$&');
-        const regex = new RegExp('[?&]' + nameEscaped + '(=([^&#]*)|&|#|$)');
-        const results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
 
-    function filterFlights() {
-        const selectedTimes = Array.from(departureCheckboxes)
-                                    .filter(checkbox => checkbox.checked)
-                                    .map(checkbox => {
-                                        const value = checkbox.value;
-                                        if (value === "06") return {start: "00:00", end: "06:00"};
-                                        if (value === "12") return {start: "06:00", end: "12:00"};
-                                        if (value === "18") return {start: "12:00", end: "18:00"};
-                                        if (value === "24") return {start: "18:00", end: "24:00"};
-                                    });
-
-        // 동적으로 사용자 입력 값을 가져와 URL에 포함
-        
-        const btnEl = document.querySelector('.reservationBtn');
-        const depTime1 = btnEl.dataset.gostarttime;
-        const arrTime1 = btnEl.dataset.goendtime;
-        const depTime2 = btnEl.dataset.comestarttime;
-        const arrTime2 = btnEl.dataset.comeendtime;
-        const depCity1 = btnEl.dataset.godepcity;
-        const arrCity1 = btnEl.dataset.goarrcity;
-        const depCity2 = btnEl.dataset.comedepcity;
-        const arrCity2 = btnEl.dataset.comearrcity;
-        const stype = btnEl.dataset.stypeidx;
-        //const ptypeList = Array.from(document.querySelectorAll("input[name='ptypeList']:checked")).map(ptype => ptype.value);
-        
-        //const params = ${params};
-        //const ptypeList = btnEl.dataset.ptypelist.split(',').map(Number);
-        const ptypeList = btnEl.dataset.ptypelist;
-
-        console.dir(btnEl);
-        console.dir(depTime1);
-        console.dir(arrTime1);
-        console.dir(depTime2);
-        console.dir(arrTime2);
-        console.dir(depCity1);
-        console.dir(arrCity1);
-        console.dir(depCity2);
-        console.dir(arrCity2);
-        console.dir(stype);
-        console.dir(ptypeList);
-        
-        const url = `/flights?depDate=\${depDate}&arrDate=\${arrDate}&depCity1=\${depCity1}&arrCity1=\${arrCity1}&stype=\${stype}&ptypeList=\${ptypeList.join(',')}&departureTimes=\${encodeURIComponent(JSON.stringify(selectedTimes))}`;
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const flightWrappers = document.querySelector('.content');
-                flightWrappers.innerHTML = '';
-
-                data.forEach(flight => {
-                    const flightElement = document.createElement('div');
-                    flightElement.className = 'flight-wrapper';
-                    flightElement.innerHTML = `
-                        <div class="flight-header">
-                            <span class="flight-logo">
-                                <img src="${flight.logo}" class="spanImg" alt="logo">
-                                <em>${flight.name}</em>
-                            </span>
-                            <div class="flight-details-wrapper">
-                                <div class="flight-details">
-                                    <ul>
-                                        <li>
-                                            <div>
-                                                <span class="fontSetting">
-                                                    <span class="locSetting">${flight.startTime1}
-                                                        <em>${flight.depCityCode1}
-                                                            <span>${flight.depCity1}</span>
-                                                        </em>
-                                                    </span>
-                                                </span>
-                                                <span class="time-taken">
-                                                    <img src="/images/arrow.jpg" class="arrowImg" alt="arrow">
-                                                    <em>${flight.durationhour}시간 ${flight.durationminute}분</em>
-                                                </span>
-                                                <span class="fontSetting">
-                                                    <span class="locSetting">${flight.endTime1}
-                                                        <em>${flight.arrCityCode1}
-                                                            <span>${flight.arrCity1}</span>
-                                                        </em>
-                                                    </span>
-                                                </span>
-                                                <br>
-                                                <span class="fontSetting">
-                                                    <span class="locSetting">${flight.startTime2}
-                                                        <em>${flight.depCityCode2}
-                                                            <span>${flight.depCity2}</span>
-                                                        </em>
-                                                    </span>
-                                                </span>
-                                                <span class="time-taken">
-                                                    <img src="/images/arrow.jpg" class="arrowImg" alt="arrow">
-                                                </span>
-                                                <span class="fontSetting">
-                                                    <span class="locSetting">${flight.endTime2}
-                                                        <em>${flight.arrCityCode2}
-                                                            <span>${flight.arrCity2}</span>
-                                                        </em>
-                                                    </span>
-                                                </span>
-                                                <span>직항</span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <form class="paymentForm" action="/Airplane/AirplanePay" method="POST">
-                                <input type="hidden" name="orderId" value="${flight.airplane_time_idx}">
-                                <input type="hidden" name="userId" value="${sessionScope.login.id}">
-                                <input type="hidden" name="itemName" value="${flight.name}">
-                                <input type="hidden" name="seatClass" value="${flight.seatClass}">
-                                <input type="hidden" name="adultCount" value="${flight.adultCount}">
-                                <input type="hidden" name="childCount" value="${flight.childCount}">
-                                <input type="hidden" name="infantCount" value="${flight.infantCount}">
-                                <input type="hidden" name="startdate" value="${flight.startTime1}">
-                                <input type="hidden" name="departureloc" value="${flight.departure_loc}">
-                                <input type="hidden" name="arrivalloc" value="${flight.arrival_loc}">
-                                <input type="hidden" name="stypeidx" value="${flight.stype_idx}">
-                                <span class="price-info">
-                                    <button type="submit" class="reservationBtn">예약</button>
-                                    <div>
-                                        <strong>${flight.totalPrice} KRW</strong>
-                                    </div>
-                                </span>
-                            </form>
-                        </div>
-                    `;
-                    flightWrappers.appendChild(flightElement);
-                });
-            });
-    }
-
-    filterFlights(); // 페이지 로드 시 초기 필터링
 });
 
 </script>

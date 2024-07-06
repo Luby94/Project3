@@ -1,6 +1,5 @@
 package com.escape.airplane.mapper;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -33,5 +32,9 @@ public interface AirplaneMapper {
 	//List<AirplaneTimeVo> getFlightInfo(Map<String, Object> params);
 	List<AirplaneTimeVo> getOneWayFlightInfo(Map<String, Object> params);
 	List<AirplaneTimeVo> getRoundTripFlightInfo(Map<String, Object> params);
+	List<AirplaneTimeVo> getRoundTripFlightInfo();
+	
+	List<AirplaneTimeVo> getOneWayFilterInfo(Map<String, Object> params);
+	List<AirplaneTimeVo> getRoundTripFilterInfo(Map<String, Object> params);
 	
 }
