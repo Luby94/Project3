@@ -20,11 +20,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/Airline")
@@ -106,8 +103,14 @@ public class AirlineController {
 	        int infantPrice = airplaneMapper.getPriceInfo(airplaneTimeIdx, 3, stype) * infantCount;
 
 	        int totalPrice = adultPrice + childPrice + infantPrice;
+	        
+	        //flight.setTotalPrice(totalPrice);
 
-	        flight.setTotalPrice(totalPrice);
+	        if (initform.equals("RT")) {
+	        	flight.setTotalPrice(totalPrice*2);
+	        } else {
+	        	flight.setTotalPrice(totalPrice);
+	        }
 	    }
 	}
 	
@@ -115,6 +118,7 @@ public class AirlineController {
     public ResponseEntity<Map<String, Object>> filter(
             @RequestParam Map<String, Object> params,
             @RequestParam(value = "checkboxId[]", required = false) List<String> checkboxIds) throws JsonMappingException, JsonProcessingException {
+		
         System.out.println("Airline/Filter-params1: " + params);
 
         int stype = Integer.parseInt((String) params.get("stype"));
@@ -133,12 +137,6 @@ public class AirlineController {
         System.out.println("Airline/Filter-isChecked: " + isChecked);
         System.out.println("Airline/Filter-checkboxIds: " + checkboxIds);
 
-        List<TimeRange> departureTimes = new ArrayList<>();
-        List<TimeRange> returnTimes = new ArrayList<>();
-
-        Set<TimeRange> usedDepartTimeRanges = new HashSet<>();
-        Set<TimeRange> usedReturnTimeRanges = new HashSet<>();
-        
         ObjectMapper objectMapper = new ObjectMapper();
         String timeRangesJson1 = (String) params.get("timeRanges1");
         List<Map<String, String>> timeRanges1 = objectMapper.readValue(timeRangesJson1, new TypeReference<List<Map<String, String>>>(){});
@@ -147,81 +145,6 @@ public class AirlineController {
         List<Map<String, String>> timeRanges2 = objectMapper.readValue(timeRangesJson2, new TypeReference<List<Map<String, String>>>(){});
         System.out.println("===== Airline/Filter-timeRanges2: " + timeRanges2);
 
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//            String timeRangesJson1 = (String) params.get("timeRanges1");
-//            List<Map<String, String>> timeRanges1 = objectMapper.readValue(timeRangesJson1, new TypeReference<List<Map<String, String>>>(){});
-//            System.out.println("===== Airline/Filter-timeRanges1: " + timeRanges1);
-//
-//            for (Map<String, String> range : timeRanges1) {
-//                System.out.println("===== Airline/Filter-range: " + range);
-//
-//                TimeRange timeRange = new TimeRange(range.get("startTime1"), range.get("startTime2"));
-//                System.out.println("===== Airline/Filter-timeRange: " + timeRange);
-//
-//                // 체크박스 아이디에 따라 departureTimes 또는 returnTimes에 추가
-//                if (checkboxIds != null) {
-//                    for (String checkboxId : checkboxIds) {
-//                        System.out.println("===== Airline/Filter-checkboxId: " + checkboxId);
-//                        if (checkboxId.startsWith("ckDep_")) {
-//                            if (checkboxId.startsWith("ckDep_01") || checkboxId.startsWith("ckDep_02") || checkboxId.startsWith("ckDep_03") || checkboxId.startsWith("ckDep_04")) {
-//                                if (!usedDepartTimeRanges.contains(timeRange)) {
-//                                    departureTimes.add(timeRange);
-//                                    usedDepartTimeRanges.add(timeRange); // 중복 체크
-//                                }
-//                            } else if (checkboxId.startsWith("ckDep_05") || checkboxId.startsWith("ckDep_06") || checkboxId.startsWith("ckDep_07") || checkboxId.startsWith("ckDep_08")) {
-//                                if (!usedReturnTimeRanges.contains(timeRange)) {
-//                                    returnTimes.add(timeRange);
-//                                    usedReturnTimeRanges.add(timeRange); // 중복 체크
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//        	String timeRangesJson2 = (String) params.get("timeRanges2");
-//        	List<Map<String, String>> timeRanges2 = objectMapper.readValue(timeRangesJson2, new TypeReference<List<Map<String, String>>>(){});
-//        	System.out.println("===== Airline/Filter-timeRanges2: " + timeRanges2);
-//        	
-//        	for (Map<String, String> range : timeRanges2) {
-//        		System.out.println("===== Airline/Filter-range: " + range);
-//        		
-//        		TimeRange timeRange = new TimeRange(range.get("startTime1"), range.get("startTime2"));
-//        		System.out.println("===== Airline/Filter-timeRange: " + timeRange);
-//        		
-//        		// 체크박스 아이디에 따라 departureTimes 또는 returnTimes에 추가
-//        		if (checkboxIds != null) {
-//        			for (String checkboxId : checkboxIds) {
-//        				System.out.println("===== Airline/Filter-checkboxId: " + checkboxId);
-//        				if (checkboxId.startsWith("ckDep_")) {
-//        					if (checkboxId.startsWith("ckDep_01") || checkboxId.startsWith("ckDep_02") || checkboxId.startsWith("ckDep_03") || checkboxId.startsWith("ckDep_04")) {
-//        						if (!usedDepartTimeRanges.contains(timeRange)) {
-//        							departureTimes.add(timeRange);
-//        							usedDepartTimeRanges.add(timeRange); // 중복 체크
-//        						}
-//        					} else if (checkboxId.startsWith("ckDep_05") || checkboxId.startsWith("ckDep_06") || checkboxId.startsWith("ckDep_07") || checkboxId.startsWith("ckDep_08")) {
-//        						if (!usedReturnTimeRanges.contains(timeRange)) {
-//        							returnTimes.add(timeRange);
-//        							usedReturnTimeRanges.add(timeRange); // 중복 체크
-//        						}
-//        					}
-//        				}
-//        			}
-//        		}
-//        	}
-//        } catch (Exception e) {
-//        	e.printStackTrace();
-//        }
-//
-//        System.out.println("===== Airline/Filter-usedDepartTimeRanges: " + usedDepartTimeRanges);
-//        System.out.println("===== Airline/Filter-usedReturnTimeRanges: " + usedReturnTimeRanges);
-
-        params.put("departureTimes", departureTimes);
-        params.put("returnTimes", returnTimes);
         params.put("timeRanges1", timeRanges1);
         params.put("timeRanges2", timeRanges2);
 
@@ -245,57 +168,6 @@ public class AirlineController {
         response.put("flightInfo", flightInfo);
 
         return ResponseEntity.ok(response);
-    }
-	
-	static class TimeRange {
-        private String startTime1;
-        private String startTime2;
-
-        public TimeRange(String startTime1, String startTime2) {
-            this.startTime1 = startTime1;
-            this.startTime2 = startTime2;
-        }
-
-        // Getters and setters
-        public String getStartTime1() {
-            return startTime1;
-        }
-
-        public void setStartTime(String startTime1) {
-            this.startTime1 = startTime1;
-        }
-
-        public String getStartTime2() {
-            return startTime2;
-        }
-
-        public void setStartTime2(String startTime2) {
-            this.startTime2 = startTime2;
-        }
-
-        // toString 오버라이드
-        @Override
-        public String toString() {
-            return "TimeRange{" +
-                    "startTime1='" + startTime1 + '\'' +
-                    ", startTime2='" + startTime2 + '\'' +
-                    '}';
-        }
-
-        // equals와 hashCode 오버라이드
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            TimeRange timeRange = (TimeRange) o;
-            return Objects.equals(startTime1, timeRange.startTime2) &&
-                    Objects.equals(startTime2, timeRange.startTime2);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(startTime1, startTime2);
-        }
     }
 	
 }
