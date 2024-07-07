@@ -2,8 +2,6 @@ package com.escape.airplane.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,22 +21,20 @@ public class FlightService {
         formatDateParams(params);
         List<AirplaneTimeVo> flights = airplaneMapper.getOneWayFlightInfo(params);
 
-        // Consolidate flights by unique airplane_time_idx
-        return consolidateFlights(flights);
+        return flights;
     }
 
     public List<AirplaneTimeVo> getRoundTripFlightInfo(Map<String, Object> params) {
         formatDateParams(params);
         List<AirplaneTimeVo> flights = airplaneMapper.getRoundTripFlightInfo(params);
+        System.out.println("===== Service/flights ===" + flights);
 
-        // Consolidate flights by unique airplane_time_idx
-        return consolidateFlights(flights);
+        return flights;
     }
 
     private void formatDateParams(Map<String, Object> params) {
         String initform = (String) params.get("initform");
         if ("RT".equalsIgnoreCase(initform)) {
-            // If it's a round-trip flight, format both departure and arrival dates
             if (params.containsKey("depDate")) {
                 String depDateStr = (String) params.get("depDate");
                 LocalDate depDate = LocalDate.parse(depDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -49,11 +45,11 @@ public class FlightService {
             if (params.containsKey("arrDate") && !((String) params.get("arrDate")).isEmpty()) {
                 String arrDateStr = (String) params.get("arrDate");
                 LocalDate arrDate = LocalDate.parse(arrDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                params.put("arrDate", arrDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 LocalDate arrDatePlusOne = arrDate.plusDays(1);
-                params.put("arrDate", arrDatePlusOne.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                params.put("arrDate2", arrDatePlusOne.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             }
         } else if ("OW".equalsIgnoreCase(initform)) {
-            // If it's a one-way flight, format only the departure date
             if (params.containsKey("depDate")) {
                 String depDateStr = (String) params.get("depDate");
                 LocalDate depDate = LocalDate.parse(depDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -64,30 +60,13 @@ public class FlightService {
         }
     }
     
-    // 승객명수 조건 unique
-    private List<AirplaneTimeVo> consolidateFlights(List<AirplaneTimeVo> flights) {
-        Map<Integer, AirplaneTimeVo> flightMap = new HashMap<>();
-        for (AirplaneTimeVo flight : flights) {
-            int key = flight.getAirplane_time_idx();
-            if (!flightMap.containsKey(key)) {
-                flightMap.put(key, flight);
-            } else {
-                // If the flight already exists, update its price or other details if necessary
-                AirplaneTimeVo existingFlight = flightMap.get(key);
-                existingFlight.setTotalPrice(existingFlight.getTotalPrice() + flight.getTotalPrice());
-            }
-        }
-        return new ArrayList<>(flightMap.values());
-    }
-    
     // 필터링-편도
 	public List<AirplaneTimeVo> getOneWayFilterInfo(Map<String, Object> params) {
 		
 		formatDateParams(params);
         List<AirplaneTimeVo> flights = airplaneMapper.getOneWayFilterInfo(params);
 
-        // Consolidate flights by unique airplane_time_idx
-        return consolidateFlights(flights);
+        return flights;
         
 	}
 
@@ -98,8 +77,8 @@ public class FlightService {
 		System.out.println("===== Service/getRoundTripFilterInfo === params: " + params );
         List<AirplaneTimeVo> flights = airplaneMapper.getRoundTripFilterInfo(params);
 
-        // Consolidate flights by unique airplane_time_idx
-        return consolidateFlights(flights);
+        return flights;
         
 	}
+	
 }
