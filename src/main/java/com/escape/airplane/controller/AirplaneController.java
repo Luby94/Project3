@@ -179,6 +179,74 @@ public class AirplaneController {
         //mv.setViewName("airplane/airplanepaybefore");
         return mv;
     }
+	
+	@RequestMapping("/AirplanePayOW")
+	public ModelAndView airplanepayOW(
+			@RequestParam Map<Object, Object> params,
+			AirplaneTimeVo airplaneTimeVo
+			) {
+		
+		System.out.println("===== AirplanePayOW === params: " + params);
+		
+		int user_idx = airplaneMapper.getUserIdx(params.get("userId"));
+		System.out.println("===== AirplanePayOW === user_idx: " + user_idx);
+		
+		int orderId1 = Integer.parseInt((String) params.get("orderId1"));
+		String userId = (String) params.get("userId");
+		String itemName1 = (String) params.get("itemName1");
+		String seatClass = (String) params.get("seatClass");
+		int stype = Integer.parseInt((String) params.get("stype"));
+		int adultCount = Integer.parseInt((String) params.get("adultCount"));
+		int childCount = Integer.parseInt((String) params.get("childCount"));
+		int infantCount = Integer.parseInt((String) params.get("infantCount"));
+		int totalCount = adultCount + childCount + infantCount;
+		String initform = (String) params.get("initform");
+		
+		// ptype_idx 별 가격 계산
+		int adultPrice1 = airplaneMapper.getPriceInfo(orderId1, 1, stype) * adultCount;
+		int childPrice1 = airplaneMapper.getPriceInfo(orderId1, 2, stype) * childCount;
+		int infantPrice1 = airplaneMapper.getPriceInfo(orderId1, 3, stype) * infantCount;
+		int price1 = adultPrice1 + childPrice1 + infantPrice1;
+		String totalPrice = (String) params.get("totalPrice");
+		
+		System.out.println("===== AirplanePayOW === orderId1: " + orderId1);
+		System.out.println("===== AirplanePayOW === userId: " + userId);
+		System.out.println("===== AirplanePayOW === itemName1: " + itemName1);
+		System.out.println("===== AirplanePayOW === seatClass: " + seatClass);
+		System.out.println("===== AirplanePayOW === stype: " + stype);
+		System.out.println("===== AirplanePayOW === adultCount: " + adultCount);
+		System.out.println("===== AirplanePayOW === childCount: " + childCount);
+		System.out.println("===== AirplanePayOW === infantCount: " + infantCount);
+		System.out.println("===== AirplanePayOW === totalCount: " + totalCount);
+		System.out.println("===== AirplanePayOW === initform: " + initform);
+		System.out.println("===== AirplanePayOW === adultPrice1: " + adultPrice1);
+		System.out.println("===== AirplanePayOW === childPrice1: " + childPrice1);
+		System.out.println("===== AirplanePayOW === infantPrice1: " + infantPrice1);
+		System.out.println("===== AirplanePayOW === price1: " + price1);
+		System.out.println("===== AirplanePayOW === totalPrice: " + totalPrice);
+		
+		String paymentUrl = kakaoPayService.readyToPay2(orderId1, userId, itemName1, seatClass, adultCount, childCount, infantCount, totalPrice, user_idx, airplaneTimeVo );
+		System.out.println("===== AirplanePayOW === paymentUrl: " + paymentUrl);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("orderId1", orderId1);
+		mv.addObject("userId", userId);
+		mv.addObject("user_idx", user_idx);
+		mv.addObject("itemName1", itemName1);
+		mv.addObject("seatClass", seatClass);
+		mv.addObject("adultCount", adultCount);
+		mv.addObject("childCount", childCount);
+		mv.addObject("infantCount", infantCount);
+		mv.addObject("totalCount", totalCount);
+		mv.addObject("adultPrice1", adultPrice1);
+		mv.addObject("childPrice1", childPrice1);
+		mv.addObject("infantPrice1", infantPrice1);
+		mv.addObject("price1", price1);
+		mv.addObject("totalPrice", totalPrice);
+		mv.addObject("paymentUrl", paymentUrl); // 결제 URL 추가
+		mv.setViewName("airplane/airplanepay2");
+		return mv;
+	}
 
     @RequestMapping("/PaySuccess")
     @ResponseBody
@@ -214,6 +282,37 @@ public class AirplaneController {
         //return ResponseEntity.ok(response);
     }
     
+    @RequestMapping("/PaySuccessOW")
+    @ResponseBody
+    public ResponseEntity<?> PaySuccessOW(@RequestBody PaymentVo paymentVo) {
+    	
+    	System.out.println("===== PaySuccess/paymentVo: " + paymentVo);
+    	
+    	int orderId1 = paymentVo.getAirplane_time_idx1();
+    	String userId = paymentVo.getUserId();
+    	int user_idx = paymentVo.getUser_idx();
+    	String itemName1 = paymentVo.getItemName1();
+    	int totalCount = paymentVo.getTotalCount();
+    	int totalPrice = paymentVo.getTotalPrice();
+    	int price1 = paymentVo.getPrice1();
+    	
+    	System.out.println("===== PaySuccess/orderId1: " + orderId1);
+    	System.out.println("===== PaySuccess/userId: " + userId);
+    	
+    	//kakaoPayService.savePayment(paymentVo, orderId1, orderId2, userId, user_idx, itemName1, itemName2, totalCount, totalPrice, price1, price2);
+    	try {
+    		kakaoPayService.savePayment2(paymentVo, orderId1, userId, user_idx, itemName1, totalCount, totalPrice, price1);
+    		return ResponseEntity.ok().body("{\"status\":\"success\"}");
+    	} catch (DuplicateReservationException e) {
+    		return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    	}
+    	
+    	//Map<String, String> response = new HashMap<>();
+    	//response.put("status", "success");
+    	
+    	//return ResponseEntity.ok(response);
+    }
+    
     @GetMapping("/airplaneafter")
     public String airplaneAfter() {
         return "airplane/airplanepayafter";
@@ -233,6 +332,20 @@ public class AirplaneController {
         }
 
         return ResponseEntity.ok().body("{\"status\":\"success\"}");
+    }
+
+    @PostMapping("/CheckReservationOW")
+    public ResponseEntity<String> checkReservationOW(@RequestBody Map<String, Object> payload) {
+    	int orderId1 = Integer.parseInt( (String) payload.get("airplane_time_idx1") );
+    	int user_idx = Integer.parseInt( (String) payload.get("user_idx") );
+    	
+    	int existingRecords1 = paymentMapper.checkReservationExists(user_idx, orderId1);
+    	
+    	if (existingRecords1 > 0) {
+    		return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 예약된 목록입니다.");
+    	}
+    	
+    	return ResponseEntity.ok().body("{\"status\":\"success\"}");
     }
     
 //    @PostMapping("/PaySuccess")

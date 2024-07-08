@@ -182,8 +182,8 @@ label, input[type="checkbox"], input[type="radio"], button, select {
 				<label for="initFormCode1">왕복</label>
 				<input type="radio" id="initFormCode2" name="initform" onclick="openscriptCode2()" value="OW" class="input_radio">
 				<label for="initFormCode2">편도</label>
-				<input type="radio" id="initFormCode3" name="initform" onclick="openscriptCode3()" value="MT" class="input_radio">
-				<label for="initFormCode3">다구간</label>
+				<!-- <input type="radio" id="initFormCode3" name="initform" onclick="openscriptCode3()" value="MT" class="input_radio">
+				<label for="initFormCode3">다구간</label> -->
 			</li>
 		</ul>
 		
