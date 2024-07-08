@@ -36,4 +36,6 @@ public interface AirplaneMapper {
 	List<AirplaneTimeVo> getOneWayFilterInfo(Map<String, Object> params);
 	List<AirplaneTimeVo> getRoundTripFilterInfo(Map<String, Object> params);
 	
+	List<AirplaneTimeVo> getReservationInfo(AirplaneTimeVo airplaneTimeVo);
+	
 }

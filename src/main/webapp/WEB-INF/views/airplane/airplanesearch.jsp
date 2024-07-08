@@ -405,6 +405,10 @@ function confirmPayment1(event) {
         var name1 = flightWrapper.getAttribute('data-name1');
         var name2 = flightWrapper.getAttribute('data-name2');
         var totalPrice = flightWrapper.querySelector('.price-info strong').innerText.split(' ')[0];
+        var known1 = flightWrapper.getAttribute('data-known1');
+        var known2 = flightWrapper.getAttribute('data-known2');
+        var seat_su1 = flightWrapper.getAttribute('data-seat-su1');
+        var seat_su2 = flightWrapper.getAttribute('data-seat-su2');
         
      	// 폼 생성
         var form = document.createElement('form');
@@ -424,7 +428,11 @@ function confirmPayment1(event) {
             { name: 'infantCount', value: infantCount },
             { name: 'totalPrice', value: totalPrice },
             { name: 'stype', value: stype },
-            { name: 'initform', value: initform }
+            { name: 'initform', value: initform },
+            { name: 'known1', value: known1 },
+            { name: 'known2', value: known2 },
+            { name: 'seat_su1', value: seat_su1 },
+            { name: 'seat_su2', value: seat_su2 }
         ];
 
         params.forEach(function(inputData) {
@@ -836,6 +844,10 @@ document.querySelectorAll('.reservationBtn2').forEach(function(button) {
                     flightWrapper.setAttribute('data-b-airplane-time-idx', flight.airplane_time_idx2);
                     flightWrapper.setAttribute('data-name1', flight.name1);
                     flightWrapper.setAttribute('data-name2', flight.name2);
+                    flightWrapper.setAttribute('data-known1', flight.known1);
+                    flightWrapper.setAttribute('data-known2', flight.known2);
+                    flightWrapper.setAttribute('data-seat-su1', flight.seat_su1);
+                    flightWrapper.setAttribute('data-seat-su2', flight.seat_su2);
 
                     flightWrapper.innerHTML = `
 	                        <div class="flight-header">

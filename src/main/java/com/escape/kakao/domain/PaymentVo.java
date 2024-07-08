@@ -16,11 +16,12 @@ public class PaymentVo {
 	private int totalPrice;
 	private String itemName1;
 	private String itemName2;
+	private int known;
 
 	public PaymentVo() {}
 	public PaymentVo(int airplane_pay_idx, int user_idx, int airplane_reservation_idx, int price1, int price2,
 			int state, String created, int airplane_time_idx1, int airplane_time_idx2, String userId, int totalCount,
-			int totalPrice, String itemName1, String itemName2) {
+			int totalPrice, String itemName1, String itemName2, int known) {
 		super();
 		this.airplane_pay_idx = airplane_pay_idx;
 		this.user_idx = user_idx;
@@ -36,6 +37,7 @@ public class PaymentVo {
 		this.totalPrice = totalPrice;
 		this.itemName1 = itemName1;
 		this.itemName2 = itemName2;
+		this.known = known;
 	}
 
 	public int getAirplane_pay_idx() {
@@ -122,6 +124,12 @@ public class PaymentVo {
 	public void setItemName2(String itemName2) {
 		this.itemName2 = itemName2;
 	}
+	public int getKnown() {
+		return known;
+	}
+	public void setKnown(int known) {
+		this.known = known;
+	}
 	
 	@Override
 	public String toString() {
@@ -129,7 +137,8 @@ public class PaymentVo {
 				+ ", airplane_reservation_idx=" + airplane_reservation_idx + ", price1=" + price1 + ", price2=" + price2
 				+ ", state=" + state + ", created=" + created + ", airplane_time_idx1=" + airplane_time_idx1
 				+ ", airplane_time_idx2=" + airplane_time_idx2 + ", userId=" + userId + ", totalCount=" + totalCount
-				+ ", totalPrice=" + totalPrice + ", itemName1=" + itemName1 + ", itemName2=" + itemName2 + "]";
+				+ ", totalPrice=" + totalPrice + ", itemName1=" + itemName1 + ", itemName2=" + itemName2 + ", known="
+				+ known + "]";
 	}
 	
 }

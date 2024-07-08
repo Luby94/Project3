@@ -68,7 +68,7 @@ public class AirplaneController {
         int adultCount = Integer.parseInt( (String) params.get("adultCount") );
         int childCount = Integer.parseInt( (String) params.get("childCount") );
         int infantCount = Integer.parseInt( (String) params.get("infantCount") );
-		
+        
         ModelAndView mv = new ModelAndView();
         mv.addObject("params", params);
         mv.addObject("id", id);
@@ -128,6 +128,11 @@ public class AirplaneController {
         int price2 = adultPrice2 + childPrice2 + infantPrice2;
         String totalPrice = (String) params.get("totalPrice");
         
+        int known1 = Integer.parseInt((String) params.get("known1"));
+        int known2 = Integer.parseInt((String) params.get("known2"));
+        int seat_su1 = Integer.parseInt((String) params.get("seat_su1"));
+        int seat_su2 = Integer.parseInt((String) params.get("seat_su2"));
+        
         System.out.println("===== AirplanePay === orderId1: " + orderId1);
 		System.out.println("===== AirplanePay === orderId2: " + orderId2);
 		System.out.println("===== AirplanePay === userId: " + userId);
@@ -174,6 +179,10 @@ public class AirplaneController {
         mv.addObject("infantPrice2", infantPrice2);
         mv.addObject("price2", price2);
         mv.addObject("totalPrice", totalPrice);
+        mv.addObject("known1", known1);
+        mv.addObject("known2", known2);
+        mv.addObject("seat_su1", seat_su1);
+        mv.addObject("seat_su2", seat_su2);
         mv.addObject("paymentUrl", paymentUrl); // 결제 URL 추가
         mv.setViewName("airplane/airplanepay");
         //mv.setViewName("airplane/airplanepaybefore");
@@ -307,10 +316,6 @@ public class AirplaneController {
     		return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     	}
     	
-    	//Map<String, String> response = new HashMap<>();
-    	//response.put("status", "success");
-    	
-    	//return ResponseEntity.ok(response);
     }
     
     @GetMapping("/airplaneafter")
@@ -347,31 +352,5 @@ public class AirplaneController {
     	
     	return ResponseEntity.ok().body("{\"status\":\"success\"}");
     }
-    
-//    @PostMapping("/PaySuccess")
-//    @ResponseBody
-//    public ModelAndView PaySuccess(@RequestBody PaymentVo paymentVo) {
-//    	
-//    	System.out.println("===== PaySuccess/paymentVo: " + paymentVo);
-//    	
-//    	int orderId = paymentVo.getAirplane_time_idx();
-//    	String userId = paymentVo.getUserId();
-//    	int user_idx = paymentVo.getUser_idx();
-//    	String itemName1 = paymentVo.getItemName();
-//    	int totalCount = paymentVo.getTotalCount();
-//    	int totalPrice = paymentVo.getPrice();
-//    	
-//    	System.out.println("===== PaySuccess/orderId: " + orderId);
-//    	System.out.println("===== PaySuccess/userId: " + userId);
-//    	
-//    	kakaoPayService.savePayment(paymentVo, orderId, userId, user_idx, itemName1, totalCount, totalPrice);
-//    	
-//    	Map<String, String> response = new HashMap<>();
-//    	response.put("status", "success");
-//    	
-//    	ModelAndView mv = new ModelAndView();
-//    	mv.setViewName("airplane/airplanepayafter");
-//    	return mv;
-//    }
 	
 }

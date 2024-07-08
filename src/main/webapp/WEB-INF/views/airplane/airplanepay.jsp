@@ -103,6 +103,9 @@ h1 {
                 <span>1인당 가격:</span> ${infantPrice1}
             </div>
             <div>
+            	<span>예약현황:</span> ${known1} / ${seat_su1}
+            </div>
+            <div>
             	<span>합계:</span> ${price1}
             </div>
         </div>
@@ -136,6 +139,9 @@ h1 {
                     <img src="/images/arrow.jpg" class="arrowImg" alt="arrow" style="width: 40px; height: 20px;">
                 </span>
                 <span>1인당 가격:</span> ${infantPrice2}
+            </div>
+            <div>
+            	<span>예약현황:</span> ${known2} / ${seat_su2}
             </div>
             <div>
             	<span>합계:</span> ${price2}

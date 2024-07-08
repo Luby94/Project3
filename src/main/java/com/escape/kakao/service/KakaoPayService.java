@@ -125,59 +125,6 @@ public class KakaoPayService {
     }
 
 	//-------------------------------------------------------------------------------------------------------
-	
-//	public void savePayment(PaymentVo paymentVo, int orderId1, int orderId2, String userId, int user_idx, 
-//			String itemName1, String itemName2, int totalCount, int totalPrice, int price1, int price2) {
-//		
-//		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//		params.add("cid", cid);
-//		params.add("partner_order_id", String.valueOf(orderId1));
-//		params.add("partner_order_id2", String.valueOf(orderId2));
-//		params.add("partner_user_id", userId);
-//		params.add("item_name", itemName1);
-//		params.add("item_name2", itemName2);
-//		params.add("quantity", String.valueOf(totalCount));
-//		//params.add("total_amount", String.valueOf(totalPrice));
-//		params.add("total_amount1", String.valueOf(price1));
-//		params.add("total_amount2", String.valueOf(price2));
-//		params.add("tax_free_amount", "0");
-//		params.add("approval_url", "http://localhost:9089/kakaoPaySuccess");
-//		params.add("cancel_url", "http://localhost:9089/kakaoPayCancel");
-//		params.add("fail_url", "http://localhost:9089/kakaoPayFail");
-//		
-//		int quantity = Integer.parseInt(params.getFirst("quantity"));
-//		int totalAmount1 = Integer.parseInt(params.getFirst("total_amount1"));
-//		int totalAmount2 = Integer.parseInt(params.getFirst("total_amount2"));
-//		int existingRecords1 = paymentMapper.checkReservationExists(user_idx, orderId1);
-//		int existingRecords2 = paymentMapper.checkReservationExists(user_idx, orderId2);
-//		
-//		if (existingRecords1 > 0 || existingRecords2 > 0) {
-//	        throw new DuplicateReservationException("이미 예약된 목록입니다.");
-//	    }
-//		
-//		if (existingRecords1 == 0) {
-//	        // 중복이 없으면 INSERT 수행
-//	        paymentMapper.insertReservation(user_idx, orderId1, quantity, totalAmount1);
-//	        paymentMapper.updateReservation( orderId1 );	// status : 1 → 2
-//	        
-//	        int Reservationidx = paymentMapper.getReservationIdx1( paymentVo );
-//	        System.out.println("===== savePayment === Reservationidx: " + Reservationidx);
-//	        
-//	        paymentMapper.insertPayment1( paymentVo, Reservationidx );
-//	    }
-//
-//		if (existingRecords2 == 0) {
-//			// 중복이 없으면 INSERT 수행
-//			paymentMapper.insertReservation(user_idx, orderId2, quantity, totalAmount2);
-//			paymentMapper.updateReservation( orderId2 );	// status : 1 → 2
-//			
-//			int Reservationidx = paymentMapper.getReservationIdx2( paymentVo );
-//			System.out.println("===== savePayment === Reservationidx: " + Reservationidx);
-//			
-//			paymentMapper.insertPayment2( paymentVo, Reservationidx );
-//		}
-//
-//	}
     
     public void savePayment(PaymentVo paymentVo, int orderId1, int orderId2, String userId, int user_idx, 
             String itemName1, String itemName2, int totalCount, int totalPrice, int price1, int price2) {
