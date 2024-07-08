@@ -623,12 +623,18 @@ FROM
 	          #{ptype}
 	        </foreach>
        AND AT.STYPE_IDX=#{stype}
-	AND
-            (
-                <foreach item="timeRange" collection="timeRanges1" open="(" separator="OR" close=")">
-                    (TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') >= #{timeRange.startTime1} AND TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') &lt;= #{timeRange.startTime2})
-                </foreach>
-            )
+       AND 
+           (
+            <foreach item="timeRange" collection="timeRanges1" open="(" separator="OR" close=")">
+              (TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') >= #{timeRange.startTime1} AND TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') &lt;= #{timeRange.startTime2})
+            </foreach>
+           )
+       AND 
+           (
+            <foreach item="airlineName" collection="airlineNames" open="(" separator="OR" close=")">
+              (AL.NAME = #{airlineName})
+            </foreach>
+           )
    ) A
 JOIN
    (SELECT 
@@ -663,12 +669,18 @@ JOIN
 	          #{ptype}
 	        </foreach>
        AND AT.STYPE_IDX=#{stype}
-	AND
-            (
-                <foreach item="timeRange" collection="timeRanges2" open="(" separator="OR" close=")">
-                    (TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') >= #{timeRange.startTime1} AND TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') &lt;= #{timeRange.startTime2})
-                </foreach>
-            )
+       AND 
+           (
+             <foreach item="timeRange" collection="timeRanges2" open="(" separator="OR" close=")">
+                 (TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') >= #{timeRange.startTime1} AND TO_CHAR(ATT.START_TIME, 'HH24:MI:SS') &lt;= #{timeRange.startTime2})
+             </foreach>
+           )
+       AND 
+           (
+            <foreach item="airlineName" collection="airlineNames" open="(" separator="OR" close=")">
+              (AL.NAME = #{airlineName})
+            </foreach>
+           )
    ) B
 ON A.PTYPE_IDX = B.PTYPE_IDX
 GROUP BY 

@@ -451,25 +451,25 @@ function confirmPayment(event) {
 	                <ul role="airlineChkBox">
 	                    <li>
 	                        <div class="check_wrap">
-	                            <input type="checkbox" class="airline-checkbox" id="airline_ck01" checked="checked">
+	                            <input type="checkbox" class="airline-checkbox" name="airlineName" id="airline_ck01" checked="checked">
 	                            <label for="airline_ck01"><span class="airline-label"></span>대한항공</label>
 	                        </div>
 	                    </li>
 	                    <li>
 	                        <div class="check_wrap">
-	                            <input type="checkbox" class="airline-checkbox" id="airline_ck02" checked="checked">
+	                            <input type="checkbox" class="airline-checkbox" name="airlineName" id="airline_ck02" checked="checked">
 	                            <label for="airline_ck02"><span class="airline-label"></span>아시아나항공</label>
 	                        </div>
 	                    </li>
 	                    <li>
 	                        <div class="check_wrap">
-	                            <input type="checkbox" class="airline-checkbox" id="airline_ck03" checked="checked">
+	                            <input type="checkbox" class="airline-checkbox" name="airlineName" id="airline_ck03" checked="checked">
 	                            <label for="airline_ck03"><span class="airline-label"></span>에어부산</label>
 	                        </div>
 	                    </li>
 	                    <li>
 	                        <div class="check_wrap">
-	                            <input type="checkbox" class="airline-checkbox" id="airline_ck04" checked="checked">
+	                            <input type="checkbox" class="airline-checkbox" name="airlineName" id="airline_ck04" checked="checked">
 	                            <label for="airline_ck04"><span class="airline-label"></span>제주항공</label>
 	                        </div>
 	                    </li>
@@ -486,14 +486,14 @@ function confirmPayment(event) {
 		                <li id="price-range-text">1,500,000원 미만</li>
 		                <li>
 		                    <div>
-		                        <input type="range" id="price-range" name="price-range" min="0" max="300" value="150" class="price-slider">
+		                        <input type="range" id="price-range" name="price-range" min="0" max="3000000" value="1500000" class="price-slider" step="100000">
 		                        <input type="hidden" id="price-range-hidden" name="price-range-hidden">
 		                    </div>
 		                </li>
 		            </ul>
 		        </div>
 		    </div>
-		    
+		
 		    <button type="submit" id="search-button">조건검색</button>
 
 	    </div>
@@ -534,7 +534,7 @@ function confirmPayment(event) {
 
 	function updatePriceRange() {
 	const value = priceRange.value;
-	const price = value * 10000; // 슬라이더 값에 따라 가격 계산
+	const price = value; // 슬라이더 값에 따라 가격 계산
 	const formattedPrice = price.toLocaleString() + '원 이하';
 
 	// 텍스트 업데이트
@@ -574,7 +574,7 @@ function confirmPayment(event) {
         const childCount = '${childCount}';
         const infantCount = '${infantCount}';
 
-     	// Function to get checked time ranges
+     	// 사이드바-시간대-가는날
         function getCheckedTimeRanges1() {
             const checkboxes = document.querySelectorAll('[id^="ckDep_"][name="departureTimes"]');
             let timeRanges1 = [];
@@ -614,6 +614,7 @@ function confirmPayment(event) {
             return timeRanges1;
         }
      	
+     	// 사이드바-시간대-오는날
         function getCheckedTimeRanges2() {
             const checkboxes = document.querySelectorAll('[id^="ckDep_"][name="returnTimes"]');
             let timeRanges2 = [];
@@ -653,7 +654,7 @@ function confirmPayment(event) {
             return timeRanges2;
         }
 
-        // Function to update flight information on the page
+        // div="content" 업데이트 부분
         function updateFlightInfo(data) {
             const flightInfo = data.flightInfo;
             const params = data.params;
@@ -851,13 +852,13 @@ function confirmPayment(event) {
             }
         });
         
-     	// 사이드바 필터링 AJAX 요청 - /Airline/Filter
+     	// 사이드바 필터링
         function handleCheckboxClick(event) {
             // Apply filters whenever a checkbox is clicked
             applyFilters();
         }
 
-        // Main function to apply filters and send AJAX request
+        // 사이드바 필터링 AJAX 요청 - /Airline/Filter
         function applyFilters() {
         	
             const filters = {
@@ -866,6 +867,9 @@ function confirmPayment(event) {
                 checkboxValue: getCheckedValues(),
                 timeRanges1: JSON.stringify(getCheckedTimeRanges1()),
                 timeRanges2: JSON.stringify(getCheckedTimeRanges2()),
+                airlineId: getCheckedAirlineIds(),
+                airlineNames: getCheckedAirlineNames(),
+                priceRange: document.getElementById('price-range-hidden').value,
                 id: '${id}',
                 depCity1: '${depCity1}',
                 depCity2: '${depCity2}',
@@ -950,6 +954,66 @@ function confirmPayment(event) {
             });
             return checkboxValues;
         }
+     	
+     	//------------------ 사이드바 시간대 End ---------------------
+     	
+     	// Add event listeners to checkboxes
+        const acheckboxes = document.querySelectorAll('[id^="airline_ck"]');
+     	console.log('AJAX_Filter_acheckboxes: ', acheckboxes);
+        acheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', handleCheckboxClick);
+        });
+        
+     	// 사이드바-항공사 ID
+     	function getCheckedAirlineIds() {
+     		const airlineIdEls = document.querySelectorAll('.check_wrap input[type="checkbox"]:checked');
+     		console.log('AJAX_Filter_getCheckedAirlineIds: ', airlineIdEls);
+     		return Array.from(airlineIdEls).map(ac => ac.id);
+     	}
+     	
+     	// 사이드바-항공사 이름
+     	function getCheckedAirlineNames() {
+    		const acheckboxes = document.querySelectorAll('[id^="airline_ck"][name="airlineName"]');
+    		console.log('AJAX_Filter_getCheckedAirlineNames: ', acheckboxes);
+    		
+		    let airlineNames = [];
+		    acheckboxes.forEach(checkbox => {
+		        if (checkbox.checked) {
+		            let airlineName = null;
+		            switch (checkbox.id) {
+		                case 'airline_ck01':
+		                    airlineName = '대한항공';
+		                    break;
+		                case 'airline_ck02':
+		                    airlineName = '아시아나항공';
+		                    break;
+		                case 'airline_ck03':
+		                    airlineName = '에어부산';
+		                    break;
+		                case 'airline_ck04':
+		                    airlineName = '제주항공';
+		                    break;
+		            }
+		            airlineNames.push(airlineName);
+		        }
+		    });
+		    console.log('Filter/airlineNames: ', airlineNames);
+		    return airlineNames;
+		}
+     	
+     	//------------------ 사이드바 항공사이름 End ---------------------
+     	
+     	// 가격 범위 슬라이더 값 업데이트
+        document.getElementById('price-range').addEventListener('input', function() {
+            const priceText = this.value.toLocaleString() + '원 미만';
+            document.getElementById('price-range-text').innerText = priceText;
+            document.getElementById('price-range-hidden').value = this.value;
+        });
+
+        // 조건 검색 버튼 클릭 시 필터 적용
+        document.getElementById('search-button').addEventListener('click', function() {
+            applyFilters();
+        });
         
     });
 </script>

@@ -117,9 +117,14 @@ public class AirlineController {
 	@PostMapping("/Filter")
     public ResponseEntity<Map<String, Object>> filter(
             @RequestParam Map<String, Object> params,
-            @RequestParam(value = "checkboxId[]", required = false) List<String> checkboxIds) throws JsonMappingException, JsonProcessingException {
+            @RequestParam(value = "checkboxId[]", required = false) List<String> checkboxIds,
+            @RequestParam(value = "airlineNames[]", required = false) List<String> airlineNames,
+            @RequestParam(value = "priceRange", required = false) String priceRange
+            ) throws JsonMappingException, JsonProcessingException {
 		
         System.out.println("Airline/Filter-params1: " + params);
+        System.out.println("Airline/Filter-airlineNames: " + airlineNames);
+        System.out.println("Airline/Filter-priceRange: " + priceRange);
 
         int stype = Integer.parseInt((String) params.get("stype"));
         int adultCount = Integer.parseInt((String) params.get("adultCount"));
@@ -147,6 +152,10 @@ public class AirlineController {
 
         params.put("timeRanges1", timeRanges1);
         params.put("timeRanges2", timeRanges2);
+        params.put("airlineNames", airlineNames);
+        if (priceRange != null) {
+            params.put("priceRange", Integer.parseInt(priceRange));
+        }
 
         System.out.println("Airline/Filter-params2: " + params);
 
