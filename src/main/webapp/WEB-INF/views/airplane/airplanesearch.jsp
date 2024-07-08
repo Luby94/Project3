@@ -347,19 +347,87 @@ hr.short {
 
 <script type="text/javascript">
 
+//예약 버튼 클릭 시 실행될 함수
 function confirmPayment(event) {
+	
+	event.preventDefault(); // 기본 폼 제출 동작 막기
+	
     // 결제 확인 메시지 표시
     var isConfirmed = confirm("정말 결제하시겠습니까?");
     
     // 사용자가 확인을 클릭한 경우
     if (isConfirmed) {
-        // 폼 제출
-        document.querySelector('.paymentForm').submit();
-    } else {
-        // 기본 폼 제출 동작 막기
-        event.preventDefault();
+
+        // 필요한 데이터셋 값 가져오기
+        const param = '${params}';
+        const id = '${id}';
+        const depCity1 = '${depCity1}';
+        const depCity2 = '${depCity2}';
+        const arrCity1 = '${arrCity1}';
+        const arrCity2 = '${arrCity2}';
+        const depCityCode1 = '${depCityCode1}';
+        const depCityCode2 = '${depCityCode2}';
+        const arrCityCode1 = '${arrCityCode1}';
+        const arrCityCode2 = '${arrCityCode2}';
+        const depDate = '${depDate}';
+        const arrDate = '${arrDate}';
+        const initform = '${initform}';
+        const seatClass = '${seatClass}';
+        const stype = '${stype}';
+        const adultCount = '${adultCount}';
+        const childCount = '${childCount}';
+        const infantCount = '${infantCount}';
+        
+        var flightWrapper = event.target.closest('.flight-wrapper');
+        var airplaneTimeIdx = flightWrapper.getAttribute('data-airplane-time-idx');
+        var bAirplaneTimeIdx = flightWrapper.getAttribute('data-b-airplane-time-idx');
+        var name1 = flightWrapper.getAttribute('data-name1');
+        var name2 = flightWrapper.getAttribute('data-name2');
+        var totalPrice = flightWrapper.querySelector('.price-info strong').innerText.split(' ')[0];
+        
+        alert(airplaneTimeIdx);
+        alert(bAirplaneTimeIdx);
+        alert(name1);
+        alert(name2);
+        alert(totalPrice);
+        
+     	// 폼 생성
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/Airplane/AirplanePay';
+        
+        // 동적으로 hidden input 생성 및 폼에 추가
+        var params = [
+            { name: 'orderId1', value: airplaneTimeIdx },
+            { name: 'orderId2', value: bAirplaneTimeIdx },
+            { name: 'userId', value: id },
+            { name: 'itemName1', value: name1 },
+            { name: 'itemName2', value: name2 },
+            { name: 'seatClass', value: seatClass },
+            { name: 'adultCount', value: adultCount },
+            { name: 'childCount', value: childCount },
+            { name: 'infantCount', value: infantCount },
+            { name: 'totalPrice', value: totalPrice }
+        ];
+
+        params.forEach(function(inputData) {
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = inputData.name;
+            input.value = inputData.value;
+            form.appendChild(input);
+        });
+
+        // 폼을 body에 추가하고 제출
+        document.body.appendChild(form);
+        form.submit();
     }
 }
+
+// 예약 버튼에 이벤트 리스너 추가
+document.querySelectorAll('.reservationBtn').forEach(function(button) {
+    button.addEventListener('click', confirmPayment);
+});
         
 </script>
 
@@ -573,7 +641,7 @@ function confirmPayment(event) {
         const adultCount = '${adultCount}';
         const childCount = '${childCount}';
         const infantCount = '${infantCount}';
-
+        
      	// 사이드바-시간대-가는날
         function getCheckedTimeRanges1() {
             const checkboxes = document.querySelectorAll('[id^="ckDep_"][name="departureTimes"]');
@@ -670,6 +738,10 @@ function confirmPayment(event) {
                     flightWrapper.className = 'flight-wrapper';
                     flightWrapper.setAttribute('data-time', flight.startTime1);
                     flightWrapper.setAttribute('data-day', '가는날');
+                    flightWrapper.setAttribute('data-airplane-time-idx', flight.airplane_time_idx);
+                    flightWrapper.setAttribute('data-b-airplane-time-idx', flight.b_airplane_time_idx);
+                    flightWrapper.setAttribute('data-name1', flight.name1);
+                    flightWrapper.setAttribute('data-name2', flight.name2);
 
                     flightWrapper.innerHTML = `
 	                        <div class="flight-header">
@@ -760,6 +832,8 @@ function confirmPayment(event) {
                         flightWrapper.className = 'flight-wrapper';
                         flightWrapper.setAttribute('data-time', flight.startTime1);
                         flightWrapper.setAttribute('data-day', '가는날');
+                        flightWrapper.setAttribute('data-airplane-time-idx', flight.airplane_time_idx);
+                        flightWrapper.setAttribute('data-name1', flight.name1);
 
                         flightWrapper.innerHTML = `
 	                            <div class="flight-header">
