@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Airline")
@@ -170,6 +171,14 @@ public class AirlineController {
 
         calculateDuration(flightInfo);
         calculatePrice(flightInfo, adultCount, childCount, infantCount, stype, initform);
+        
+        // 필터링: totalPrice가 priceRange 이하인 항공편만 남김
+        int priceRangeInt = params.containsKey("priceRange") ? (int) params.get("priceRange") : Integer.MAX_VALUE;
+        System.out.println("Airline/Filter-priceRangeInt: " + priceRangeInt);
+        flightInfo = flightInfo.stream()
+                .filter(flight -> flight.getTotalPrice() <= priceRangeInt)
+                .collect(Collectors.toList());
+        
         System.out.println("Airline/Filter-flightInfo: " + flightInfo);
 
         Map<String, Object> response = new HashMap<>();

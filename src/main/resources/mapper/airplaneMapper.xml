@@ -635,6 +635,7 @@ FROM
               (AL.NAME = #{airlineName})
             </foreach>
            )
+       AND AT.PRICE &lt;= #{priceRange}
    ) A
 JOIN
    (SELECT 
@@ -681,6 +682,7 @@ JOIN
               (AL.NAME = #{airlineName})
             </foreach>
            )
+       AND AT.PRICE &lt;= #{priceRange}
    ) B
 ON A.PTYPE_IDX = B.PTYPE_IDX
 GROUP BY 
