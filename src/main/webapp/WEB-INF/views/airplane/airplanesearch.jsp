@@ -385,12 +385,6 @@ function confirmPayment(event) {
         var name2 = flightWrapper.getAttribute('data-name2');
         var totalPrice = flightWrapper.querySelector('.price-info strong').innerText.split(' ')[0];
         
-        alert(airplaneTimeIdx);
-        alert(bAirplaneTimeIdx);
-        alert(name1);
-        alert(name2);
-        alert(totalPrice);
-        
      	// 폼 생성
         var form = document.createElement('form');
         form.method = 'POST';
@@ -407,7 +401,9 @@ function confirmPayment(event) {
             { name: 'adultCount', value: adultCount },
             { name: 'childCount', value: childCount },
             { name: 'infantCount', value: infantCount },
-            { name: 'totalPrice', value: totalPrice }
+            { name: 'totalPrice', value: totalPrice },
+            { name: 'stype', value: stype },
+            { name: 'initform', value: initform }
         ];
 
         params.forEach(function(inputData) {
@@ -472,33 +468,35 @@ document.querySelectorAll('.reservationBtn').forEach(function(button) {
 	                        </div>
 	                    </li>
 	                </ul>
-	                <h2>오는날</h2>
-	                <ul>
-	                    <li data-time="06">
-	                        <div class="filter-section">
-	                            <input type="checkbox" id="ckDep_05" name="returnTimes" value="06" class="time-checkbox" checked="checked">
-	                            <label for="ckDep_05"><span class="time-label"></span>새벽 00:00 ~ 06:00</label>
-	                        </div>
-	                    </li>
-	                    <li data-time="12">
-	                        <div class="filter-section">
-	                            <input type="checkbox" id="ckDep_06" name="returnTimes" value="12" class="time-checkbox" checked="checked">
-	                            <label for="ckDep_06"><span class="time-label"></span>오전 06:00 ~ 12:00</label>
-	                        </div>
-	                    </li>
-	                    <li data-time="18">
-	                        <div class="filter-section">
-	                            <input type="checkbox" id="ckDep_07" name="returnTimes" value="18" class="time-checkbox" checked="checked">
-	                            <label for="ckDep_07"><span class="time-label"></span>오후 12:00 ~ 18:00</label>
-	                        </div>
-	                    </li>
-	                    <li data-time="24">
-	                        <div class="filter-section">
-	                            <input type="checkbox" id="ckDep_08" name="returnTimes" value="24" class="time-checkbox" checked="checked">
-	                            <label for="ckDep_08"><span class="time-label"></span>야간 18:00 ~ 24:00</label>
-	                        </div>
-	                    </li>
-	                </ul>
+	                <c:if test="${initform == 'RT'}">
+			            <h2>오는날</h2>
+			            <ul>
+			                <li data-time="06">
+			                    <div class="filter-section">
+			                        <input type="checkbox" id="ckDep_05" name="returnTimes" value="06" class="time-checkbox" checked="checked">
+			                        <label for="ckDep_05"><span class="time-label"></span>새벽 00:00 ~ 06:00</label>
+			                    </div>
+			                </li>
+			                <li data-time="12">
+			                    <div class="filter-section">
+			                        <input type="checkbox" id="ckDep_06" name="returnTimes" value="12" class="time-checkbox" checked="checked">
+			                        <label for="ckDep_06"><span class="time-label"></span>오전 06:00 ~ 12:00</label>
+			                    </div>
+			                </li>
+			                <li data-time="18">
+			                    <div class="filter-section">
+			                        <input type="checkbox" id="ckDep_07" name="returnTimes" value="18" class="time-checkbox" checked="checked">
+			                        <label for="ckDep_07"><span class="time-label"></span>오후 12:00 ~ 18:00</label>
+			                    </div>
+			                </li>
+			                <li data-time="24">
+			                    <div class="filter-section">
+			                        <input type="checkbox" id="ckDep_08" name="returnTimes" value="24" class="time-checkbox" checked="checked">
+			                        <label for="ckDep_08"><span class="time-label"></span>야간 18:00 ~ 24:00</label>
+			                    </div>
+			                </li>
+			            </ul>
+			        </c:if>
 	            </div>
 	        </div>
 
@@ -555,7 +553,7 @@ document.querySelectorAll('.reservationBtn').forEach(function(button) {
 		                <li>
 		                    <div>
 		                        <input type="range" id="price-range" name="price-range" min="0" max="3000000" value="1500000" class="price-slider" step="100000">
-		                        <input type="hidden" id="price-range-hidden" name="price-range-hidden">
+		                        <input type="hidden" id="price-range-hidden" name="price-range-hidden" value="1500000">
 		                    </div>
 		                </li>
 		            </ul>
@@ -732,14 +730,13 @@ document.querySelectorAll('.reservationBtn').forEach(function(button) {
             if (params.initform == 'RT') {
                 const goingDayWrapper = document.createElement('div');
                 goingDayWrapper.className = 'flight-day-wrapper';
-                goingDayWrapper.innerHTML = '<h2>가는 날</h2>';
                 flightInfo.forEach(flight => {
                     const flightWrapper = document.createElement('div');
                     flightWrapper.className = 'flight-wrapper';
                     flightWrapper.setAttribute('data-time', flight.startTime1);
                     flightWrapper.setAttribute('data-day', '가는날');
-                    flightWrapper.setAttribute('data-airplane-time-idx', flight.airplane_time_idx);
-                    flightWrapper.setAttribute('data-b-airplane-time-idx', flight.b_airplane_time_idx);
+                    flightWrapper.setAttribute('data-airplane-time-idx', flight.airplane_time_idx1);
+                    flightWrapper.setAttribute('data-b-airplane-time-idx', flight.airplane_time_idx2);
                     flightWrapper.setAttribute('data-name1', flight.name1);
                     flightWrapper.setAttribute('data-name2', flight.name2);
 
@@ -826,13 +823,12 @@ document.querySelectorAll('.reservationBtn').forEach(function(button) {
                 if (params.initform == 'OW') {
                     const comingDayWrapper = document.createElement('div');
                     comingDayWrapper.className = 'flight-day-wrapper';
-                    comingDayWrapper.innerHTML = '<h2>가는 날</h2>';
                     flightInfo.forEach(flight => {
                         const flightWrapper = document.createElement('div');
                         flightWrapper.className = 'flight-wrapper';
                         flightWrapper.setAttribute('data-time', flight.startTime1);
                         flightWrapper.setAttribute('data-day', '가는날');
-                        flightWrapper.setAttribute('data-airplane-time-idx', flight.airplane_time_idx);
+                        flightWrapper.setAttribute('data-airplane-time-idx', flight.airplane_time_idx1);
                         flightWrapper.setAttribute('data-name1', flight.name1);
 
                         flightWrapper.innerHTML = `
@@ -968,7 +964,6 @@ document.querySelectorAll('.reservationBtn').forEach(function(button) {
                 url: '/Airline/Filter',
                 data: filters,
                 success: function(data) {
-                	alert('성공');
                     console.log('AJAX_Filter_data:', data);
                     updateFlightInfo(data);
                 },
